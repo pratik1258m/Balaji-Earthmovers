@@ -36,6 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initEstimateForm();
     initMobileMenu();
     initFooterYear();
+    initVideoReel();
 });
 
 /* ==========================================================================
@@ -453,7 +454,8 @@ const FLEET_DATA = {
         title: 'Volvo EC 210 &amp; EC 290',
         category: 'CRAWLER EXCAVATOR',
         count: '3 UNITS OWNED',
-        image: 'images/site-excavator.webp',
+        image: 'images/fleet-volvo-excavator.jpg',
+        objectPosition: 'center 20%',
         specs: [
             { label: 'UNITS OWNED', val: '3' },
             { label: 'EXACT MODELS', val: 'Volvo EC 210 &amp; Volvo EC 290' },
@@ -489,7 +491,8 @@ const FLEET_DATA = {
         title: 'L&amp;T Komatsu PC-210',
         category: 'EXCAVATOR',
         count: '3 UNITS OWNED',
-        image: 'images/fleet-komatsu.jpg',
+        image: 'images/fleet-komatsu-pc210.jpg',
+        objectPosition: 'center 30%',
         specs: [
             { label: 'UNITS OWNED', val: '3' },
             { label: 'EXACT MODELS', val: 'L&amp;T Komatsu PC-210' },
@@ -513,7 +516,8 @@ const FLEET_DATA = {
         title: 'Hydraulic Rock Breakers',
         category: 'ROCK DEMOLITION',
         count: '24 UNITS OWNED',
-        image: 'images/site-trench.webp',
+        image: 'images/fleet-tata-hitachi-breaker.jpg',
+        objectPosition: 'center 40%',
         specs: [
             { label: 'UNITS OWNED', val: '24 hydraulic breaker attachments' },
             { label: 'EXACT MODELS', val: 'Breaker attachments matched to our own excavators' },
@@ -526,7 +530,8 @@ const FLEET_DATA = {
         title: 'Hyva Tippers &amp; Dumpers',
         category: 'LOADING &amp; HAULAGE',
         count: '29 UNITS OWNED',
-        image: 'images/site-tipper.webp',
+        image: 'images/fleet-hyva-tipper.jpg',
+        objectPosition: 'center 30%',
         specs: [
             { label: 'UNITS OWNED', val: '29 loading and haulage vehicles' },
             { label: 'EXACT MODELS', val: 'Hyva tippers &times; 26 &middot; Tata dumpers &times; 3' },
@@ -586,8 +591,12 @@ function initFleetModals() {
                     <h3 style="font-family: var(--font-display); font-size: clamp(24px, 4vw, 32px); font-weight: 800; color: #0F172A; margin: 4px 0 6px 0; line-height: 1.2;">${data.title}</h3>
                     <div style="font-family: var(--font-mono); font-size: 11px; font-weight: 600; color: #64748B;">${data.count}</div>
                 </div>
-                <div style="width:100%; height: clamp(170px, 28vh, 260px); overflow:hidden; margin-bottom: 20px; border: 1.5px solid #FED7AA; border-radius: 6px;">
-                    <img src="${data.image}" alt="${data.title}" style="width:100%; height:100%; object-fit:cover;">
+                <div class="fleet-modal-img-container" style="position:relative; width:100%; height: clamp(240px, 38vh, 340px); overflow:hidden; margin-bottom: 20px; border: 1.5px solid #FED7AA; border-radius: 6px; background: #0F172A;">
+                    <img id="fleetModalImg" src="${data.image}" alt="${data.title}" data-position="${data.objectPosition || 'center center'}" style="width:100%; height:100%; object-fit:cover; object-position:${data.objectPosition || 'center center'}; display:block; transition: object-fit 0.25s ease;">
+                    <button type="button" class="btn-fit-toggle" onclick="toggleFleetImgFit(this)" title="Toggle full uncropped view" style="position:absolute; right:10px; bottom:10px; background:rgba(15,23,42,0.85); border:1px solid rgba(254,215,170,0.6); color:#FED7AA; font-family:var(--font-mono); font-size:10.5px; font-weight:700; padding:5px 11px; border-radius:4px; display:inline-flex; align-items:center; gap:6px; cursor:pointer; backdrop-filter:blur(6px); z-index:3;">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 3 21 3 21 9"></polyline><polyline points="9 21 3 21 3 15"></polyline><line x1="21" y1="3" x2="14" y2="10"></line><line x1="3" y1="21" x2="10" y2="14"></line></svg>
+                        <span id="fitToggleLabel">SHOW FULL PHOTO</span>
+                    </button>
                 </div>
                 <div style="margin-bottom: 24px;">
                     ${specsHtml}
@@ -1029,3 +1038,123 @@ function initGalleryLightbox() {
     }
 }
 
+
+
+/* ==========================================================================
+   15. On-Site Action Video Reel
+   ========================================================================== */
+const VIDEO_REEL_DATA = [
+    {
+        src: 'video/basement-excavation-panoramic.mp4',
+        poster: 'images/fleet-tata-hitachi-breaker.jpg',
+        tag: 'DEEP BASEMENT EXCAVATION',
+        desc: 'Panoramic view of multi-level basement excavation with secant pile shoring, Tata Hitachi excavators and rock breakers working below grade.'
+    },
+    {
+        src: 'video/komatsu-loading-hyva.mp4',
+        poster: 'images/fleet-komatsu-pc210.jpg',
+        tag: 'BULK EXCAVATION & LOADING',
+        desc: 'Komatsu PC 210 LC excavating earth and rock, loading Tata Hyva tipper trucks for off-site disposal on an active Mumbai project.'
+    },
+    {
+        src: 'video/hitachi-ex70-loading.mp4',
+        poster: 'images/gallery-muck-haulage.jpg',
+        tag: 'COMPACT EXCAVATION & HAULING',
+        desc: 'Tata Hitachi EX 70 crawler excavator with dozer blade excavating and loading muck directly into a Tata tipper for rapid removal.'
+    },
+    {
+        src: 'video/volvo-rock-breaking.mp4',
+        poster: 'images/fleet-volvo-excavator.jpg',
+        tag: 'HARD ROCK BREAKING',
+        desc: 'Volvo crawler excavator on upper ramp while hydraulic rock breakers hammer basalt in a deep shored basement pit.'
+    },
+    {
+        src: 'video/jcb-piling-support.mp4',
+        poster: 'images/gallery-komatsu-loading.jpg',
+        tag: 'BACKHOE & PILING SUPPORT',
+        desc: 'JCB Backhoe Loader digging and levelling alongside a crawler piling rig with Mahindra pickup support vehicle on site.'
+    },
+    {
+        src: 'video/site-supervision-operations.mp4',
+        poster: 'images/fleet-hyva-tipper.jpg',
+        tag: 'SITE SUPERVISION & OPS',
+        desc: 'Tata Hitachi excavator working in a rock excavation pit with site engineers and supervisors overseeing ongoing operations.'
+    }
+];
+
+function initVideoReel() {
+    const tabContainer = document.getElementById('videoReelTabs');
+    const video = document.getElementById('reelVideo');
+    const overlay = document.getElementById('videoReelOverlay');
+    const playBtn = document.getElementById('videoPlayBtn');
+    const tagEl = document.getElementById('videoReelTag');
+    const descEl = document.getElementById('videoReelDesc');
+
+    if (!tabContainer || !video) return;
+
+    const tabs = tabContainer.querySelectorAll('.video-tab-btn');
+    let currentIdx = 0;
+
+    function loadVideo(idx) {
+        if (idx < 0 || idx >= VIDEO_REEL_DATA.length) return;
+        const data = VIDEO_REEL_DATA[idx];
+        currentIdx = idx;
+
+        video.pause();
+        video.src = data.src;
+        video.poster = data.poster;
+        video.load();
+
+        if (tagEl) tagEl.textContent = data.tag;
+        if (descEl) descEl.textContent = data.desc;
+
+        // Show overlay with play button
+        if (overlay) overlay.classList.remove('hidden');
+
+        tabs.forEach((tab, i) => {
+            const isActive = i === idx;
+            tab.classList.toggle('active', isActive);
+            tab.setAttribute('aria-selected', String(isActive));
+        });
+    }
+
+    tabs.forEach((tab, i) => {
+        tab.addEventListener('click', () => loadVideo(i));
+    });
+
+    if (playBtn) {
+        playBtn.addEventListener('click', () => {
+            video.play();
+            if (overlay) overlay.classList.add('hidden');
+        });
+    }
+
+    video.addEventListener('play', () => {
+        if (overlay) overlay.classList.add('hidden');
+    });
+
+    video.addEventListener('pause', () => {
+        if (video.ended && overlay) overlay.classList.remove('hidden');
+    });
+
+    video.addEventListener('ended', () => {
+        if (overlay) overlay.classList.remove('hidden');
+    });
+}
+
+
+window.toggleFleetImgFit = function(btn) {
+    const img = document.getElementById('fleetModalImg');
+    const label = document.getElementById('fitToggleLabel');
+    if (!img || !label) return;
+    const isContained = img.style.objectFit === 'contain';
+    if (isContained) {
+        img.style.objectFit = 'cover';
+        img.style.objectPosition = img.getAttribute('data-position') || 'center center';
+        label.textContent = 'SHOW FULL PHOTO';
+    } else {
+        img.style.objectFit = 'contain';
+        img.style.objectPosition = 'center center';
+        label.textContent = 'FOCUS MACHINE';
+    }
+};

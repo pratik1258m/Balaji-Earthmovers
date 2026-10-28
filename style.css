@@ -4476,3 +4476,491 @@ body.modal-open {
         animation: none;
     }
 }
+
+
+/* ==========================================================================
+   New Content & Structure Styles: About Us, Capabilities, Roster & Form
+   ========================================================================== */
+
+/* About Us Section */
+.about-section {
+    padding: clamp(60px, 8vw, 120px) 0;
+    border-bottom: 1px solid var(--c-beige-border);
+    position: relative;
+    background-color: var(--c-beige-bg);
+}
+
+.about-grid {
+    display: grid;
+    grid-template-columns: 1.15fr 0.85fr;
+    gap: clamp(32px, 5vw, 64px);
+    align-items: center;
+}
+
+.about-content {
+    max-width: 680px;
+}
+
+.about-paragraphs {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    margin-top: clamp(20px, 2.5vw, 32px);
+}
+
+.about-lead {
+    font-size: clamp(16px, 1.25vw, 19px);
+    font-weight: 600;
+    line-height: 1.65;
+    color: var(--c-beige-text);
+}
+
+.about-text {
+    font-size: clamp(14px, 1.05vw, 16px);
+    line-height: 1.72;
+    color: var(--c-beige-text-muted);
+}
+
+.about-visual-card {
+    position: relative;
+    border: 1px solid var(--c-beige-border);
+    background-color: var(--c-beige-card);
+    padding: 12px;
+    box-shadow: 0 20px 48px rgba(11, 21, 40, 0.08);
+    overflow: hidden;
+}
+
+.about-visual-img {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    display: block;
+    border-radius: 2px;
+}
+
+.about-visual-badge {
+    position: absolute;
+    bottom: 24px;
+    left: 24px;
+    right: 24px;
+    background: rgba(11, 21, 40, 0.92);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-left: 3px solid var(--c-copper);
+    padding: 14px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    color: #FFFFFF;
+}
+
+.about-badge-year {
+    color: var(--c-copper);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+}
+
+.about-badge-desc {
+    font-size: 13px;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.85);
+}
+
+/* Capability Card Image Additions */
+.cap-img-wrap {
+    position: relative;
+    width: calc(100% + 2 * clamp(22px, 2.4vw, 34px));
+    margin: calc(-1 * clamp(22px, 2.4vw, 34px)) calc(-1 * clamp(22px, 2.4vw, 34px)) clamp(18px, 2vw, 24px);
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+    background-color: var(--c-dark-surface);
+}
+
+.cap-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform var(--transition-med);
+}
+
+.cap-card:hover .cap-img {
+    transform: scale(1.05);
+}
+
+/* Fleet Equipment Roster & Highlights */
+.fleet-intro-block {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-width: 800px;
+    margin-top: 16px;
+}
+
+.fleet-roster-box {
+    background-color: var(--c-beige-card);
+    border: 1px solid var(--c-beige-border);
+    border-left: 3px solid var(--c-copper);
+    padding: clamp(24px, 3vw, 36px);
+    margin: clamp(28px, 3.5vw, 44px) 0;
+    box-shadow: 0 10px 30px rgba(11, 21, 40, 0.04);
+}
+
+.roster-heading {
+    font-family: var(--font-serif);
+    font-size: var(--fs-h3);
+    font-weight: 700;
+    color: var(--c-beige-text);
+    margin-bottom: 20px;
+}
+
+.roster-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px 28px;
+}
+
+.roster-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: var(--fs-body);
+    line-height: 1.55;
+}
+
+.roster-bullet {
+    color: var(--c-copper);
+    font-weight: bold;
+    line-height: 1.2;
+}
+
+.roster-name {
+    color: var(--c-beige-text);
+    font-weight: 700;
+    margin-right: 6px;
+}
+
+.roster-desc {
+    color: var(--c-beige-text-muted);
+}
+
+.fleet-footnote-accent {
+    display: inline-block;
+    margin-top: 8px;
+    color: var(--c-copper);
+    font-weight: 600;
+}
+
+/* Projects Subhead & Highlights */
+.projects-sublead-block {
+    margin-top: 24px;
+    padding-top: 20px;
+    border-top: 1px solid var(--c-beige-border);
+}
+
+.projects-subhead {
+    font-family: var(--font-serif);
+    font-size: var(--fs-h3);
+    font-weight: 700;
+    color: var(--c-beige-text);
+    margin-bottom: 8px;
+}
+
+.projects-subdesc {
+    font-size: var(--fs-body);
+    color: var(--c-beige-text-muted);
+    margin-bottom: 16px;
+    line-height: 1.55;
+}
+
+.project-highlights-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.highlights-title {
+    font-family: var(--font-mono);
+    font-size: var(--fs-mono-label);
+    letter-spacing: 0.1em;
+    font-weight: 700;
+    color: var(--c-beige-text);
+    text-transform: uppercase;
+}
+
+.highlights-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.highlight-chip {
+    display: inline-flex;
+    align-items: center;
+    background-color: var(--c-beige-surface);
+    border: 1px solid var(--c-beige-border);
+    padding: 6px 14px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--c-beige-text);
+    border-radius: 2px;
+}
+
+.highlight-chip::before {
+    content: '✓';
+    color: var(--c-copper);
+    margin-right: 6px;
+    font-weight: 800;
+}
+
+.leader-eyebrow {
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    color: var(--c-copper);
+    font-weight: 700;
+    margin: 8px 0 16px;
+    display: block;
+}
+
+/* File Upload Box */
+.file-upload-box {
+    position: relative;
+    border: 1px dashed var(--c-beige-border);
+    background-color: var(--c-beige-bg);
+    padding: 14px 16px;
+    border-radius: 2px;
+    display: flex;
+    align-items: center;
+    transition: border-color var(--transition-fast), background-color var(--transition-fast);
+}
+
+.file-upload-box:hover {
+    border-color: var(--c-copper);
+    background-color: #FFFFFF;
+}
+
+.file-input {
+    width: 100%;
+    cursor: pointer;
+    font-size: 13px;
+    color: var(--c-beige-text-muted);
+}
+
+.file-input::file-selector-button {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    font-weight: 700;
+    background-color: var(--c-dark-bg);
+    color: #FFFFFF;
+    border: none;
+    padding: 6px 12px;
+    margin-right: 12px;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: background-color var(--transition-fast);
+}
+
+.file-input::file-selector-button:hover {
+    background-color: var(--c-copper);
+}
+
+.file-custom-prompt {
+    display: none;
+}
+
+@media (max-width: 991px) {
+    .about-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .roster-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+/* ==========================================================================
+   Video Reel Section
+   ========================================================================== */
+.video-reel-section {
+    padding: clamp(60px, 8vw, 120px) 0;
+}
+
+.video-reel-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 32px;
+    justify-content: center;
+}
+
+.video-tab-btn {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    padding: 8px 16px;
+    background: transparent;
+    border: 1.5px solid #D4C4A8;
+    color: #64748B;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.video-tab-btn:hover {
+    border-color: var(--c-blaze-ink, #FF5E14);
+    color: var(--c-blaze-ink, #FF5E14);
+}
+
+.video-tab-btn.active {
+    background: var(--c-blaze-ink, #FF5E14);
+    border-color: var(--c-blaze-ink, #FF5E14);
+    color: #fff;
+}
+
+.video-reel-player {
+    max-width: 960px;
+    margin: 0 auto;
+}
+
+.video-reel-stage {
+    position: relative;
+    width: 100%;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 2px solid #FED7AA;
+    background: #0F172A;
+    aspect-ratio: 16 / 9;
+}
+
+.reel-video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.video-reel-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(15, 23, 42, 0.45);
+    transition: opacity 0.35s ease, visibility 0.35s ease;
+    cursor: pointer;
+    z-index: 2;
+}
+
+.video-reel-overlay.hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.video-play-btn {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    border: 2.5px solid rgba(255, 255, 255, 0.7);
+    background: rgba(255, 94, 20, 0.85);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: transform 0.25s ease, background 0.25s ease;
+    box-shadow: 0 6px 28px rgba(255, 94, 20, 0.35);
+}
+
+.video-play-btn:hover {
+    transform: scale(1.1);
+    background: rgba(255, 94, 20, 1);
+}
+
+.video-play-btn svg {
+    margin-left: 4px;
+}
+
+.video-reel-info {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.video-reel-tag {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    color: var(--c-blaze-ink, #FF5E14);
+    background: rgba(255, 94, 20, 0.1);
+    padding: 5px 14px;
+    display: inline-block;
+    margin-bottom: 10px;
+}
+
+.video-reel-desc {
+    font-size: 15px;
+    line-height: 1.65;
+    color: #64748B;
+    max-width: 640px;
+    margin: 0 auto;
+}
+
+@media (max-width: 768px) {
+    .video-reel-tabs {
+        gap: 6px;
+    }
+    .video-tab-btn {
+        font-size: 10px;
+        padding: 6px 10px;
+    }
+    .video-play-btn {
+        width: 60px;
+        height: 60px;
+    }
+    .video-play-btn svg {
+        width: 32px;
+        height: 32px;
+    }
+    .video-reel-stage {
+        border-radius: 6px;
+    }
+}
+
+
+/* ==========================================================================
+   Focal Alignment for Authentic Fleet & Gallery Photography
+   ========================================================================== */
+.fleet-card[data-fleet-id="volvo"] .fleet-img {
+    object-position: center 20% !important;
+}
+
+.fleet-card[data-fleet-id="komatsu"] .fleet-img {
+    object-position: center 30% !important;
+}
+
+.fleet-card[data-fleet-id="breakers"] .fleet-img {
+    object-position: center 40% !important;
+}
+
+.fleet-card[data-fleet-id="tippers"] .fleet-img {
+    object-position: center 30% !important;
+}
+
+.gallery-grid .gallery-item:first-child img {
+    object-position: center 35% !important;
+}
+
+.gallery-grid .gallery-item:nth-child(4) img {
+    object-position: center 30% !important;
+}
+
+.btn-fit-toggle:hover {
+    background: var(--c-blaze-ink, #FF5E14) !important;
+    color: #FFFFFF !important;
+    border-color: #FFFFFF !important;
+}
