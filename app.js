@@ -454,7 +454,7 @@ const FLEET_DATA = {
         title: 'Volvo EC 210 &amp; EC 290',
         category: 'CRAWLER EXCAVATOR',
         count: '3 UNITS OWNED',
-        image: 'images/fleet-volvo-excavator.jpg',
+        image: 'images/fleet-volvo-excavator.webp',
         objectPosition: 'center 20%',
         specs: [
             { label: 'UNITS OWNED', val: '3' },
@@ -467,7 +467,7 @@ const FLEET_DATA = {
         title: 'Tata Hitachi EX 200',
         category: 'EXCAVATOR',
         count: '7 UNITS OWNED',
-        image: 'images/fleet-hitachi.jpg',
+        image: 'images/fleet-hitachi.webp',
         specs: [
             { label: 'UNITS OWNED', val: '7 &mdash; our largest single machine group' },
             { label: 'EXACT MODELS', val: 'Tata Hitachi EX 200' },
@@ -479,7 +479,7 @@ const FLEET_DATA = {
         title: 'Zaxis 120 / 210 / 370',
         category: 'EXCAVATOR RANGE',
         count: '5 UNITS OWNED',
-        image: 'images/site-before.jpg',
+        image: 'images/site-before.webp',
         specs: [
             { label: 'UNITS OWNED', val: '5 across three classes' },
             { label: 'EXACT MODELS', val: 'Zaxis 120, Zaxis 210, Zaxis 370' },
@@ -491,7 +491,7 @@ const FLEET_DATA = {
         title: 'L&amp;T Komatsu PC-210',
         category: 'EXCAVATOR',
         count: '3 UNITS OWNED',
-        image: 'images/fleet-komatsu-pc210.jpg',
+        image: 'images/fleet-komatsu-pc210.webp',
         objectPosition: 'center 30%',
         specs: [
             { label: 'UNITS OWNED', val: '3' },
@@ -516,7 +516,7 @@ const FLEET_DATA = {
         title: 'Hydraulic Rock Breakers',
         category: 'ROCK DEMOLITION',
         count: '24 UNITS OWNED',
-        image: 'images/fleet-tata-hitachi-breaker.jpg',
+        image: 'images/fleet-tata-hitachi-breaker.webp',
         objectPosition: 'center 40%',
         specs: [
             { label: 'UNITS OWNED', val: '24 hydraulic breaker attachments' },
@@ -530,7 +530,7 @@ const FLEET_DATA = {
         title: 'Hyva Tippers &amp; Dumpers',
         category: 'LOADING &amp; HAULAGE',
         count: '29 UNITS OWNED',
-        image: 'images/fleet-hyva-tipper.jpg',
+        image: 'images/fleet-hyva-tipper.webp',
         objectPosition: 'center 30%',
         specs: [
             { label: 'UNITS OWNED', val: '29 loading and haulage vehicles' },
@@ -544,7 +544,7 @@ const FLEET_DATA = {
         title: 'JCB 3D &amp; Bolero Pickup',
         category: 'SUPPORT PLANT',
         count: '4 UNITS OWNED',
-        image: 'images/mach-jcb.jpg',
+        image: 'images/mach-jcb.webp',
         specs: [
             { label: 'UNITS OWNED', val: '4' },
             { label: 'EXACT MODELS', val: 'JCB Backhoe Loader 3D &times; 2 &middot; Mahindra Bolero Pickup &times; 2' },
@@ -1046,37 +1046,37 @@ function initGalleryLightbox() {
 const VIDEO_REEL_DATA = [
     {
         src: 'video/basement-excavation-panoramic.mp4',
-        poster: 'images/fleet-tata-hitachi-breaker.jpg',
+        poster: 'images/fleet-tata-hitachi-breaker.webp',
         tag: 'DEEP BASEMENT EXCAVATION',
         desc: 'Panoramic view of multi-level basement excavation with secant pile shoring, Tata Hitachi excavators and rock breakers working below grade.'
     },
     {
         src: 'video/komatsu-loading-hyva.mp4',
-        poster: 'images/fleet-komatsu-pc210.jpg',
+        poster: 'images/fleet-komatsu-pc210.webp',
         tag: 'BULK EXCAVATION & LOADING',
         desc: 'Komatsu PC 210 LC excavating earth and rock, loading Tata Hyva tipper trucks for off-site disposal on an active Mumbai project.'
     },
     {
         src: 'video/hitachi-ex70-loading.mp4',
-        poster: 'images/gallery-muck-haulage.jpg',
+        poster: 'images/gallery-muck-haulage.webp',
         tag: 'COMPACT EXCAVATION & HAULING',
         desc: 'Tata Hitachi EX 70 crawler excavator with dozer blade excavating and loading muck directly into a Tata tipper for rapid removal.'
     },
     {
         src: 'video/volvo-rock-breaking.mp4',
-        poster: 'images/fleet-volvo-excavator.jpg',
+        poster: 'images/fleet-volvo-excavator.webp',
         tag: 'HARD ROCK BREAKING',
         desc: 'Volvo crawler excavator on upper ramp while hydraulic rock breakers hammer basalt in a deep shored basement pit.'
     },
     {
         src: 'video/jcb-piling-support.mp4',
-        poster: 'images/gallery-komatsu-loading.jpg',
+        poster: 'images/gallery-komatsu-loading.webp',
         tag: 'BACKHOE & PILING SUPPORT',
         desc: 'JCB Backhoe Loader digging and levelling alongside a crawler piling rig with Mahindra pickup support vehicle on site.'
     },
     {
         src: 'video/site-supervision-operations.mp4',
-        poster: 'images/fleet-hyva-tipper.jpg',
+        poster: 'images/fleet-hyva-tipper.webp',
         tag: 'SITE SUPERVISION & OPS',
         desc: 'Tata Hitachi excavator working in a rock excavation pit with site engineers and supervisors overseeing ongoing operations.'
     }
