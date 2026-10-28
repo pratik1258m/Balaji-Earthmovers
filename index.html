@@ -22,6 +22,9 @@
     <link rel="apple-touch-icon" href="apple-touch-icon.png">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preload" as="image" href="images/hero-cinematic.jpg" media="(min-width: 769px)" fetchpriority="high">
+    <link rel="preload" as="image" href="images/hero-cinematic-mobile.jpg" media="(max-width: 768px)" fetchpriority="high">
     <link
         href="https://fonts.googleapis.com/css2?family=Barlow:wght@600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
         rel="stylesheet">
@@ -130,8 +133,11 @@
         <!-- Hero -->
         <section class="hero-section" id="hero">
             <div class="hero-bg-wrapper">
-                <img src="images/hero-new.webp" alt="Mumbai construction site with tower cranes and high-rises illuminated at dusk"
-                    class="hero-bg-img" id="heroBgImg" width="1024" height="401" fetchpriority="high">
+                <picture class="hero-bg-picture">
+                    <source media="(max-width: 768px)" srcset="images/hero-cinematic-mobile.jpg" width="800" height="446">
+                    <img src="images/hero-cinematic.jpg" alt="Balaji Earthmovers deep basement rock excavation site in Mumbai with crawler excavator and illuminated skyline at dusk"
+                        class="hero-bg-img" id="heroBgImg" width="1376" height="768" fetchpriority="high" decoding="async">
+                </picture>
                 <div class="hero-overlay"></div>
             </div>
 
@@ -391,7 +397,7 @@
                         <div class="craft-bg-layer">
                             <img src="images/fleet-breaker.webp"
                                 alt="Hydraulic breaker mounted on an excavator, splitting a basalt boulder"
-                                class="craft-panel-img">
+                                class="craft-panel-img" loading="lazy" decoding="async" width="1280" height="720">
                             <div class="craft-panel-overlay"></div>
                         </div>
                         <div class="craft-panel-content container">
@@ -422,7 +428,7 @@
                         <div class="craft-bg-layer">
                             <img src="images/site-after.webp"
                                 alt="Deep rock-cut basement with shored walls, a haul ramp and towers beyond the site"
-                                class="craft-panel-img">
+                                class="craft-panel-img" loading="lazy" decoding="async" width="1280" height="720">
                             <div class="craft-panel-overlay"></div>
                         </div>
                         <div class="craft-panel-content container">
@@ -453,7 +459,7 @@
                     <article class="craft-panel" id="craftPanel2" data-index="2">
                         <div class="craft-bg-layer">
                             <img src="images/site-tipper-small.webp"
-                                alt="Loaded tipper carrying excavated soil off site" class="craft-panel-img">
+                                alt="Loaded tipper carrying excavated soil off site" class="craft-panel-img" loading="lazy" decoding="async" width="1280" height="720">
                             <div class="craft-panel-overlay"></div>
                         </div>
                         <div class="craft-panel-content container">
@@ -1104,8 +1110,8 @@
                     </figure>
                     <figure class="gallery-item reveal-up" tabindex="0" role="button"
                         aria-label="Enlarge photo: Second shift on the cut">
-                        <img src="images/hero-new.webp" alt="Mumbai construction site with tower cranes and high-rises illuminated at dusk"
-                            loading="lazy">
+                        <img src="images/hero-cinematic.jpg" alt="Mumbai construction site with heavy crawler excavator and high-rises illuminated at dusk"
+                            loading="lazy" decoding="async" width="1376" height="768">
                         <figcaption>Second shift on the cut</figcaption>
                     </figure>
                     <figure class="gallery-item gi-wide reveal-up" tabindex="0" role="button"

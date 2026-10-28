@@ -128,39 +128,31 @@ function initAnimatedCounters() {
     const counterElements = document.querySelectorAll('.count-up');
     if (!counterElements.length) return;
 
-    // The markup carries the real figures so they survive without JS;
-    // zeroing them is an enhancement-only step.
-    counterElements.forEach(el => {
-        el.textContent = `0${el.getAttribute('data-suffix') || ''}`;
-    });
-
-    const counterObserver = new IntersectionObserver((entries, observer) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                startCountUp(entry.target);
-                observer.unobserve(entry.target);
-            }
-        });
-    }, { threshold: 0.2 });
-
-    counterElements.forEach(el => counterObserver.observe(el));
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     function formatNumber(val, format) {
         if (format === 'indian') {
-            // e.g. 2,00,000 / 4,00,000 / 1,50,000
             return Math.floor(val).toLocaleString('en-IN');
         }
         return val;
     }
 
     function startCountUp(el) {
+        if (el.dataset.counted === 'true') return;
+        el.dataset.counted = 'true';
+
         const target = parseFloat(el.getAttribute('data-target')) || 0;
         const decimals = parseInt(el.getAttribute('data-decimals'), 10) || 0;
-        // Suffix is used verbatim — a leading space (data-suffix=" LAKH+") must survive,
-        // so do NOT trim or normalize whitespace here.
         const suffix = el.getAttribute('data-suffix') ?? '';
         const format = el.getAttribute('data-format') || '';
-        const duration = 1800; // 1.8 seconds
+
+        if (prefersReducedMotion) {
+            const finalVal = decimals > 0 ? target.toFixed(decimals) : (format === 'indian' ? formatNumber(target, 'indian') : target);
+            el.textContent = `${finalVal}${suffix}`;
+            return;
+        }
+
+        const duration = 1600; // 1.6 seconds smooth count
         const startTime = performance.now();
 
         function easeOutExpo(t) {
@@ -187,14 +179,41 @@ function initAnimatedCounters() {
             if (progress < 1) {
                 requestAnimationFrame(updateCount);
             } else {
-                // Ensure exact final number
-                let finalVal = decimals > 0 ? target.toFixed(decimals) : (format === 'indian' ? formatNumber(target, 'indian') : target);
+                const finalVal = decimals > 0 ? target.toFixed(decimals) : (format === 'indian' ? formatNumber(target, 'indian') : target);
                 el.textContent = `${finalVal}${suffix}`;
             }
         }
 
         requestAnimationFrame(updateCount);
     }
+
+    // Set initial text to 0
+    counterElements.forEach(el => {
+        el.textContent = `0${el.getAttribute('data-suffix') || ''}`;
+    });
+
+    const counterObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                startCountUp(entry.target);
+                observer.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.1, rootMargin: '30px 0px 30px 0px' });
+
+    counterElements.forEach(el => {
+        counterObserver.observe(el);
+
+        // Immediate check: elements already visible in viewport trigger smoothly
+        const rect = el.getBoundingClientRect();
+        const inViewport = rect.top < (window.innerHeight || document.documentElement.clientHeight) && rect.bottom > 0;
+        if (inViewport) {
+            setTimeout(() => {
+                startCountUp(el);
+                counterObserver.unobserve(el);
+            }, 500);
+        }
+    });
 }
 
 /* ==========================================================================
