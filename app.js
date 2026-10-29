@@ -285,10 +285,41 @@ function initCraftSlider() {
     const progressFill = document.getElementById('craftProgressFill');
     if (!craftSec || panels.length === 0) return;
 
-    let currentPhase = 0;
     const totalPhases = panels.length;
-    let isClickScrolling = false;
-    let clickScrollTimer = null;
+    let currentPhase = 0;
+    let animatingUntil = 0;
+    let wheelAccum = 0;
+    let wheelIdleTimer = null;
+
+    /* One wheel gesture moves exactly one step. Deltas accumulate until a step
+       fires, then the accumulator is dropped and stays dropped for the whole
+       flight, so trackpad momentum cannot chain into a second jump. */
+    const WHEEL_STEP = 55;
+    const WHEEL_IDLE = 170;
+    const STEP_FLIGHT = 900;
+
+    function runway() {
+        return craftSec.offsetHeight - window.innerHeight;
+    }
+
+    /* 0..1 through the pinned band, or null when the sticky viewport does not
+       cover the window. The 1px slack matters: fractional device-pixel scrolling
+       leaves rect.top a hair above 0 at the start of the band, and a strict
+       check silently disengages the snapping there. The reduced-motion layout
+       un-pins the section, so this returns null and nothing is hijacked. */
+    function bandProgress() {
+        const r = runway();
+        if (r <= 50) return null;
+        const rect = craftSec.getBoundingClientRect();
+        if (rect.top > 1 || rect.bottom < window.innerHeight - 1) return null;
+        return Math.min(1, Math.max(0, -rect.top / r));
+    }
+
+    function updateProgress(progress) {
+        if (!progressFill) return;
+        const pct = Math.max(15, Math.min(100, progress * 85 + 15));
+        progressFill.style.width = `${pct}%`;
+    }
 
     function setActivePhase(index) {
         if (index < 0) index = 0;
@@ -296,138 +327,190 @@ function initCraftSlider() {
         currentPhase = index;
 
         panels.forEach((p, idx) => {
-            if (idx === currentPhase) {
-                p.classList.add('active');
-            } else {
-                p.classList.remove('active');
-            }
+            const isActive = idx === currentPhase;
+            p.classList.toggle('active', isActive);
+            p.setAttribute('aria-hidden', String(!isActive));
         });
 
         phaseBtns.forEach((btn, idx) => {
-            if (idx === currentPhase) {
-                btn.classList.add('active');
-            } else {
-                btn.classList.remove('active');
-            }
+            const isActive = idx === currentPhase;
+            btn.classList.toggle('active', isActive);
+            btn.setAttribute('aria-selected', String(isActive));
         });
 
-        if (prevBtn) prevBtn.style.opacity = currentPhase === 0 ? '0.35' : '1';
-        if (nextBtn) nextBtn.style.opacity = currentPhase === totalPhases - 1 ? '0.35' : '1';
+        if (prevBtn) {
+            prevBtn.style.opacity = currentPhase === 0 ? '0.35' : '1';
+            prevBtn.style.cursor = currentPhase === 0 ? 'default' : 'pointer';
+        }
+        if (nextBtn) {
+            nextBtn.style.opacity = currentPhase === totalPhases - 1 ? '0.35' : '1';
+            nextBtn.style.cursor = currentPhase === totalPhases - 1 ? 'default' : 'pointer';
+        }
     }
 
-    function scrollToPhase(index) {
+    function phaseTop(index) {
+        const rect = craftSec.getBoundingClientRect();
+        const fraction = totalPhases > 1 ? index / (totalPhases - 1) : 0;
+        return rect.top + window.pageYOffset + fraction * runway();
+    }
+
+    function goToPhase(index) {
         if (index < 0) index = 0;
         if (index >= totalPhases) index = totalPhases - 1;
 
-        const rect = craftSec.getBoundingClientRect();
-        const runway = craftSec.offsetHeight - window.innerHeight;
-        const craftTop = rect.top + window.pageYOffset;
-
-        // Position offsets: 0%, 50%, 100% of runway
-        const fraction = totalPhases > 1 ? index / (totalPhases - 1) : 0;
-        const targetScrollY = craftTop + fraction * runway;
-
-        isClickScrolling = true;
-        clearTimeout(clickScrollTimer);
         setActivePhase(index);
+        wheelAccum = 0;
 
-        if (progressFill) {
-            const pct = Math.max(10, Math.min(100, fraction * 100));
-            progressFill.style.width = `${pct}%`;
+        if (runway() <= 50) {
+            updateProgress(totalPhases > 1 ? index / (totalPhases - 1) : 0);
+            return;
         }
 
-        window.scrollTo({
-            top: targetScrollY,
-            behavior: 'smooth'
-        });
-
-        clickScrollTimer = setTimeout(() => {
-            isClickScrolling = false;
-        }, 800);
+        animatingUntil = Date.now() + STEP_FLIGHT;
+        window.scrollTo({ top: phaseTop(index), behavior: 'smooth' });
     }
 
-    // Scroll listener for sticky pinning progression
-    function handleScroll() {
-        if (isClickScrolling) return;
-
-        const rect = craftSec.getBoundingClientRect();
-        const runway = craftSec.offsetHeight - window.innerHeight;
-        if (runway <= 0) return;
-
-        const scrolled = -rect.top;
-
-        if (scrolled >= 0 && scrolled <= runway) {
-            // Inside the pinned scroll-lock runway
-            const progress = scrolled / runway; // 0 to 1
-            let targetPhase = 0;
-
-            if (progress < 0.33) {
-                targetPhase = 0;
-            } else if (progress < 0.67) {
-                targetPhase = 1;
-            } else {
-                targetPhase = 2;
-            }
-
-            if (targetPhase !== currentPhase) {
-                setActivePhase(targetPhase);
-            }
-
-            if (progressFill) {
-                const pct = Math.max(10, Math.min(100, progress * 100));
-                progressFill.style.width = `${pct}%`;
-            }
-        } else if (scrolled < 0) {
+    /* Nearest-boundary phase for the current scroll position. Skipped while a
+       programmatic flight is in progress so the panel does not flicker back
+       halfway through a step. */
+    function syncPhase() {
+        const r = runway();
+        if (r <= 50) return;
+        const scrolled = -craftSec.getBoundingClientRect().top;
+        if (scrolled < 0) {
             if (currentPhase !== 0) setActivePhase(0);
-            if (progressFill) progressFill.style.width = '10%';
-        } else if (scrolled > runway) {
-            if (currentPhase !== totalPhases - 1) setActivePhase(totalPhases - 1);
-            if (progressFill) progressFill.style.width = '100%';
+            return;
         }
+        if (scrolled > r) {
+            if (currentPhase !== totalPhases - 1) setActivePhase(totalPhases - 1);
+            return;
+        }
+        if (Date.now() < animatingUntil) return;
+
+        const targetPhase = Math.round(scrolled / r * (totalPhases - 1));
+        if (targetPhase !== currentPhase) setActivePhase(targetPhase);
+    }
+
+    // Scroll listener linking sticky runway progress to phases
+    function handleScroll() {
+        const r = runway();
+        if (r <= 50) return;
+
+        // The bar mirrors real scroll position, even mid-flight.
+        const scrolled = -craftSec.getBoundingClientRect().top;
+        updateProgress(Math.min(1, Math.max(0, scrolled / r)));
+        syncPhase();
+    }
+
+    function handleWheel(e) {
+        if (e.ctrlKey || e.deltaY === 0) return;
+
+        if (bandProgress() === null) return;
+
+        // Still flying between boundaries: swallow the rest of the gesture.
+        if (Date.now() < animatingUntil) {
+            e.preventDefault();
+            wheelAccum = 0;
+            return;
+        }
+
+        // Re-derive from the real position: a scrollbar drag or a resize during
+        // the flight can leave currentPhase behind the page.
+        syncPhase();
+
+        // At an edge and moving outward the user is leaving the section.
+        // Never trap them — let the page carry that scroll.
+        const exiting = (e.deltaY < 0 && currentPhase === 0)
+            || (e.deltaY > 0 && currentPhase === totalPhases - 1);
+        if (exiting) {
+            wheelAccum = 0;
+            return;
+        }
+
+        if (Math.sign(e.deltaY) !== Math.sign(wheelAccum)) wheelAccum = 0;
+        wheelAccum += e.deltaY;
+
+        clearTimeout(wheelIdleTimer);
+        wheelIdleTimer = setTimeout(() => { wheelAccum = 0; }, WHEEL_IDLE);
+
+        e.preventDefault();
+        if (Math.abs(wheelAccum) < WHEEL_STEP) return;
+
+        const direction = wheelAccum > 0 ? 1 : -1;
+        wheelAccum = 0;
+        goToPhase(currentPhase + direction);
     }
 
     window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('resize', handleScroll, { passive: true });
+    window.addEventListener('wheel', handleWheel, { passive: false });
 
+    // Direct button controls — synchronized with scroll position
     phaseBtns.forEach(btn => {
         btn.addEventListener('click', (e) => {
             e.preventDefault();
             const phaseIdx = parseInt(btn.getAttribute('data-phase'), 10);
-            scrollToPhase(phaseIdx);
+            goToPhase(phaseIdx);
         });
     });
 
     if (prevBtn) {
         prevBtn.addEventListener('click', (e) => {
             e.preventDefault();
-            scrollToPhase(currentPhase - 1);
+            if (currentPhase > 0) {
+                goToPhase(currentPhase - 1);
+            } else {
+                goToPhase(totalPhases - 1);
+            }
         });
     }
 
     if (nextBtn) {
         nextBtn.addEventListener('click', (e) => {
             e.preventDefault();
-            scrollToPhase(currentPhase + 1);
+            if (currentPhase < totalPhases - 1) {
+                goToPhase(currentPhase + 1);
+            } else {
+                goToPhase(0);
+            }
         });
     }
 
+    // Touch swipe gesture support for mobile/tablets
+    let touchStartX = 0;
+    let touchEndX = 0;
+
+    craftSec.addEventListener('touchstart', (e) => {
+        touchStartX = e.changedTouches[0].screenX;
+    }, { passive: true });
+
+    craftSec.addEventListener('touchend', (e) => {
+        touchEndX = e.changedTouches[0].screenX;
+        const diffX = touchEndX - touchStartX;
+        if (Math.abs(diffX) > 40) {
+            if (diffX < 0) {
+                goToPhase((currentPhase + 1) % totalPhases);
+            } else {
+                goToPhase(currentPhase > 0 ? currentPhase - 1 : totalPhases - 1);
+            }
+        }
+    }, { passive: true });
+
+    // Keyboard Left/Right navigation only when section is in viewport
     window.addEventListener('keydown', (e) => {
         const rect = craftSec.getBoundingClientRect();
-        if (rect.top <= window.innerHeight * 0.4 && rect.bottom >= window.innerHeight * 0.2) {
-            if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
-                if (currentPhase < totalPhases - 1) {
-                    e.preventDefault();
-                    scrollToPhase(currentPhase + 1);
-                }
-            } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
-                if (currentPhase > 0) {
-                    e.preventDefault();
-                    scrollToPhase(currentPhase - 1);
-                }
+        if (rect.top <= window.innerHeight * 0.5 && rect.bottom >= window.innerHeight * 0.2) {
+            if (e.key === 'ArrowRight') {
+                e.preventDefault();
+                goToPhase((currentPhase + 1) % totalPhases);
+            } else if (e.key === 'ArrowLeft') {
+                e.preventDefault();
+                goToPhase(currentPhase > 0 ? currentPhase - 1 : totalPhases - 1);
             }
         }
     });
 
-    // Initial sync
+    // Initialize first phase and initial check
     setActivePhase(0);
     handleScroll();
 }
@@ -1114,7 +1197,18 @@ function initVideoReel() {
     const tabs = tabContainer.querySelectorAll('.video-tab-btn');
     let currentIdx = 0;
 
-    function loadVideo(idx) {
+    function playActiveVideo() {
+        const playPromise = video.play();
+        if (playPromise !== undefined) {
+            playPromise.then(() => {
+                if (overlay) overlay.classList.add('hidden');
+            }).catch(() => {
+                // Autoplay/play prevented or aborted
+            });
+        }
+    }
+
+    function loadVideo(idx, autoPlay = false) {
         if (idx < 0 || idx >= VIDEO_REEL_DATA.length) return;
         const data = VIDEO_REEL_DATA[idx];
         currentIdx = idx;
@@ -1127,24 +1221,33 @@ function initVideoReel() {
         if (tagEl) tagEl.textContent = data.tag;
         if (descEl) descEl.textContent = data.desc;
 
-        // Show overlay with play button
-        if (overlay) overlay.classList.remove('hidden');
-
         tabs.forEach((tab, i) => {
             const isActive = i === idx;
             tab.classList.toggle('active', isActive);
             tab.setAttribute('aria-selected', String(isActive));
         });
+
+        if (autoPlay) {
+            playActiveVideo();
+        } else {
+            if (overlay) overlay.classList.remove('hidden');
+        }
     }
 
     tabs.forEach((tab, i) => {
-        tab.addEventListener('click', () => loadVideo(i));
+        tab.addEventListener('click', () => loadVideo(i, false));
     });
 
     if (playBtn) {
-        playBtn.addEventListener('click', () => {
-            video.play();
-            if (overlay) overlay.classList.add('hidden');
+        playBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            playActiveVideo();
+        });
+    }
+
+    if (overlay) {
+        overlay.addEventListener('click', () => {
+            playActiveVideo();
         });
     }
 
@@ -1153,12 +1256,38 @@ function initVideoReel() {
     });
 
     video.addEventListener('pause', () => {
-        if (video.ended && overlay) overlay.classList.remove('hidden');
+        if ((video.ended || video.paused) && overlay && !video.dataset.scrollPaused) {
+            overlay.classList.remove('hidden');
+        }
     });
 
     video.addEventListener('ended', () => {
         if (overlay) overlay.classList.remove('hidden');
     });
+
+    // Auto-pause video when scrolled out of view to eliminate GPU/CPU lag
+    if ('IntersectionObserver' in window) {
+        const reelObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (!entry.isIntersecting || entry.intersectionRatio < 0.2) {
+                    if (!video.paused) {
+                        video.dataset.scrollPaused = 'true';
+                        video.pause();
+                    }
+                } else if (entry.isIntersecting && entry.intersectionRatio >= 0.25) {
+                    if (video.dataset.scrollPaused === 'true') {
+                        delete video.dataset.scrollPaused;
+                        // Keep paused with clean UI unless user chooses to resume
+                        if (overlay) overlay.classList.remove('hidden');
+                    }
+                }
+            });
+        }, {
+            threshold: [0, 0.2, 0.5]
+        });
+
+        reelObserver.observe(video);
+    }
 }
 
 

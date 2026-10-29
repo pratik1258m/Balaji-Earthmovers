@@ -17,14 +17,13 @@
     <meta property="og:type" content="website">
     <meta property="og:image" content="images/site-mumbai.webp">
 
-    <link rel="icon" href="favicon.ico" sizes="any">
-    <link rel="icon" type="image/png" sizes="64x64" href="favicon.png">
-    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <link rel="icon" type="image/webp" href="images/logo-tile.webp">
+    <link rel="apple-touch-icon" href="images/logo-tile.webp">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preload" as="image" href="images/hero-cinematic.jpg" media="(min-width: 769px)" fetchpriority="high">
-    <link rel="preload" as="image" href="images/hero-cinematic-mobile.jpg" media="(max-width: 768px)" fetchpriority="high">
+    <link rel="preload" as="image" href="images/hero-cinematic-2x.webp" media="(min-width: 769px)" fetchpriority="high">
+    <link rel="preload" as="image" href="images/hero-cinematic-mobile-portrait.webp" media="(max-width: 768px)" fetchpriority="high">
     <link
         href="https://fonts.googleapis.com/css2?family=Barlow:wght@600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
         rel="stylesheet">
@@ -134,7 +133,11 @@
         <section class="hero-section" id="hero">
             <div class="hero-bg-wrapper">
                 <picture class="hero-bg-picture">
+                    <source media="(max-width: 768px)" srcset="images/hero-cinematic-mobile-portrait.webp"
+                        width="1160" height="2227" type="image/webp">
                     <source media="(max-width: 768px)" srcset="images/hero-cinematic-mobile.jpg" width="800" height="446">
+                    <source media="(min-width: 769px)" srcset="images/hero-cinematic-2x.webp" width="2752" height="1536"
+                        type="image/webp">
                     <img src="images/hero-cinematic.jpg" alt="Balaji Earthmovers deep basement rock excavation site in Mumbai with crawler excavator and illuminated skyline at dusk"
                         class="hero-bg-img" id="heroBgImg" width="1376" height="768" fetchpriority="high" decoding="async">
                 </picture>
@@ -760,19 +763,61 @@
                     </div>
                 </div>
 
-                <p class="fleet-footnote reveal-up">
-                    Excavators 24 &middot; Rock breakers 24 &middot; Tippers &amp; dumpers 29 &middot; Backhoe loaders 2
-                    &middot; Pickups 2 &mdash; <strong>81 units total.</strong><br>
-                    <span class="fleet-footnote-accent">Our integrated fleet allows excavation and haulage activities to
-                        be coordinated under a single operational plan.</span>
-                </p>
+                <!-- Fleet Summary & Deployment Dashboard Bar -->
+                <div class="fleet-summary-bar">
+                    <div class="fsb-stats-grid">
+                        <div class="fsb-stat-card chamfer-sm">
+                            <span class="fsb-stat-num count-up" data-target="24">24</span>
+                            <span class="fsb-stat-label">CRAWLER EXCAVATORS</span>
+                            <span class="fsb-stat-sub">Volvo &middot; Hitachi &middot; Komatsu</span>
+                        </div>
+                        <div class="fsb-stat-card chamfer-sm">
+                            <span class="fsb-stat-num count-up" data-target="24">24</span>
+                            <span class="fsb-stat-label">ROCK BREAKERS</span>
+                            <span class="fsb-stat-sub">Hydraulic urban demolition</span>
+                        </div>
+                        <div class="fsb-stat-card chamfer-sm">
+                            <span class="fsb-stat-num count-up" data-target="29">29</span>
+                            <span class="fsb-stat-label">TIPPERS &amp; DUMPERS</span>
+                            <span class="fsb-stat-sub">26 Hyva &middot; 3 Tata dumpers</span>
+                        </div>
+                        <div class="fsb-stat-card chamfer-sm">
+                            <span class="fsb-stat-num count-up" data-target="4">4</span>
+                            <span class="fsb-stat-label">SUPPORT PLANT</span>
+                            <span class="fsb-stat-sub">JCB 3D &middot; Bolero pickups</span>
+                        </div>
+                        <div class="fsb-stat-card fsb-stat-total chamfer-sm">
+                            <div class="fsb-total-header">
+                                <span class="fsb-stat-num count-up" data-target="81">81</span>
+                                <span class="fsb-total-badge chamfer-sm">100% OWNED</span>
+                            </div>
+                            <span class="fsb-stat-label">TOTAL FLEET UNITS</span>
+                            <span class="fsb-stat-sub">Zero subcontractor delays</span>
+                        </div>
+                    </div>
+
+                    <div class="fsb-bottom-bar flex-between">
+                        <div class="fsb-statement">
+                            <span class="fsb-statement-tag chamfer-sm">OPERATIONAL ADVANTAGE</span>
+                            <p class="fsb-statement-text">
+                                Excavators 24 &middot; Rock breakers 24 &middot; Tippers &amp; dumpers 29 &middot; Backhoe loaders 2 &middot; Pickups 2 &mdash; <strong>81 units total.</strong> Our integrated fleet allows excavation and haulage activities to be coordinated under a single operational plan &mdash; eliminating third-party rental bottlenecks and guaranteeing rapid site mobilization across Mumbai and MMR.
+                            </p>
+                        </div>
+                        <div class="fsb-cta-wrap">
+                            <a href="#contact" class="btn btn-secondary chamfer-sm">
+                                <span>MOBILISE FOR YOUR SITE</span>
+                                <span class="btn-arrow">&rarr;</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
             </div>
         </section>
 
         <!-- Track record -->
         <section class="projects-section section-beige" id="projects">
             <div class="container">
-                <div class="projects-header flex-between reveal-up">
+                <div class="projects-header flex-between">
                     <div>
                         <div class="section-eyebrow">
                             <span class="eyebrow-dash">&mdash;</span>
@@ -1159,7 +1204,7 @@
 
                 <div class="video-reel-player reveal-up" id="videoReelPlayer">
                     <div class="video-reel-stage">
-                        <video id="reelVideo" class="reel-video" preload="metadata" playsinline controls muted
+                        <video id="reelVideo" class="reel-video" preload="none" playsinline controls muted
                             controlslist="nodownload" poster="images/fleet-tata-hitachi-breaker.webp">
                             <source src="video/basement-excavation-panoramic.mp4" type="video/mp4">
                             Your browser does not support HTML5 video.
@@ -1698,6 +1743,8 @@
                 <div class="copyright-text">
                     &copy; <span id="footerYear">2026</span> BALAJI EARTHMOVERS &middot; EST. 1991 &middot; MUMBAI
                 </div>
+                <a href="https://pratikai.in" target="_blank" rel="noopener noreferrer" class="footer-credit">WEBSITE BY
+                    OBLIX LABS</a>
                 <a href="#hero" class="back-to-surface-btn" id="backToSurfaceBtn">
                     <span>BACK TO SURFACE</span>
                     <span class="arrow">&uarr;</span>
