@@ -43,6 +43,27 @@ function serve404(req, res) {
 
 const server = http.createServer((req, res) => {
     const urlPath = decodeURIComponent(req.url.split('?')[0]);
+
+    // Forward any legacy browser favicon request (/favicon.ico, /apple-touch-icon.png, /favicon.png)
+    // directly to images/logo-tile.webp with cache-busting headers to purge stale browser caches.
+    if (urlPath === '/favicon.ico' || urlPath === '/apple-touch-icon.png' || urlPath === '/favicon.png') {
+        const logoTilePath = path.resolve(__dirname, 'images', 'logo-tile.webp');
+        fs.readFile(logoTilePath, (err, content) => {
+            if (err) {
+                serve404(req, res);
+            } else {
+                res.writeHead(200, {
+                    'Content-Type': 'image/webp',
+                    'Cache-Control': 'no-cache, no-store, must-revalidate, max-age=0',
+                    'Pragma': 'no-cache',
+                    'Expires': '0'
+                });
+                res.end(content);
+            }
+        });
+        return;
+    }
+
     let rel = urlPath === '/' ? 'index.html' : urlPath.replace(/^\/+/, '');
     if (rel === '404') rel = '404.html';
     const filePath = path.resolve(__dirname, rel);
