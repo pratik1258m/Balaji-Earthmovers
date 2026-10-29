@@ -1929,14 +1929,45 @@ img {
     flex-shrink: 0;
 }
 
+.fsb-cta-wrap .btn-estimate-header,
 .fsb-cta-wrap .btn {
     white-space: nowrap;
     display: inline-flex;
     align-items: center;
     gap: 8px;
+    background: var(--btn-grad);
+    color: #FFFFFF !important;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
     padding: 12px 22px;
-    font-size: 11.5px;
-    letter-spacing: 0.16em;
+    text-decoration: none !important;
+    border: none;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 4px 16px var(--c-blaze-glow);
+    transition: all var(--transition-med);
+    cursor: pointer;
+}
+
+.fsb-cta-wrap .btn-estimate-header:hover,
+.fsb-cta-wrap .btn:hover {
+    background: var(--btn-grad-hover);
+    box-shadow: 0 8px 24px var(--c-blaze-glow);
+    transform: translateY(-2px);
+    color: #FFFFFF !important;
+}
+
+.fsb-cta-wrap .arrow {
+    font-size: 13px;
+    transition: transform var(--transition-med);
+    display: inline-block;
+}
+
+.fsb-cta-wrap .btn-estimate-header:hover .arrow,
+.fsb-cta-wrap .btn:hover .arrow {
+    transform: translate(3px, -3px);
 }
 
 /* Fallback for legacy fleet-footnote */

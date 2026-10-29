@@ -263,7 +263,10 @@ function initNavigation() {
         anchor.addEventListener('click', function(e) {
             const targetId = this.getAttribute('href');
             if (targetId === '#') return;
-            const targetEl = document.querySelector(targetId);
+            let targetEl = document.querySelector(targetId);
+            if (!targetEl && (targetId === '#contact' || targetId === '#inquiry')) {
+                targetEl = document.getElementById('estimate');
+            }
             if (targetEl) {
                 e.preventDefault();
                 targetEl.scrollIntoView({ behavior: 'smooth' });
