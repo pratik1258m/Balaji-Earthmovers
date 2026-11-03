@@ -42,5 +42,4 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 - **Balaji Earthmovers**
 - **Address**: 604/605, B Wing, Shree Kedarnath Co-op. CHS, Opp. Gokul Anand Hotel, Overi Pada, Near W.E. Highway, Dahisar (East), Mumbai — 400068
 - **Direct Desk**: +91 93203 20445 (Call & WhatsApp)
-- **Office**: 022-28925998 | **Telefax**: 022-28923055
-- **Email**: balajiearthmovers5268@gmail.com
+- **Email**: balaji_transport5268@yahoo.com | balajiearthmovers5268@gmail.com
