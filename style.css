@@ -306,19 +306,23 @@ img {
 .nav-links {
     display: flex;
     align-items: center;
-    gap: clamp(18px, 2.6vw, 36px);
+    justify-content: center;
+    gap: clamp(12px, 1.6vw, 24px);
+    flex: 0 1 auto;
+    margin: 0;
     min-width: 0;
 }
 
 .nav-link {
     font-family: var(--font-mono);
-    font-size: 11px;
+    font-size: clamp(10.5px, 0.8vw, 11.5px);
     font-weight: 600;
-    letter-spacing: 0.22em;
+    letter-spacing: 0.14em;
     color: var(--c-beige-text);
     text-decoration: none;
     position: relative;
-    padding: 6px 0;
+    padding: 8px 4px;
+    white-space: nowrap;
     transition: color var(--transition-fast);
 }
 
@@ -346,7 +350,8 @@ img {
 .header-right {
     display: flex;
     align-items: center;
-    gap: 24px;
+    gap: clamp(12px, 1.4vw, 20px);
+    flex-shrink: 0;
 }
 
 .live-clock {
@@ -354,9 +359,12 @@ img {
     align-items: center;
     gap: 8px;
     font-family: var(--font-mono);
-    font-size: 11.5px;
-    letter-spacing: 0.15em;
+    font-size: 11px;
+    letter-spacing: 0.12em;
     color: var(--c-beige-text);
+    flex-shrink: 0;
+    white-space: nowrap;
+    margin-right: 2px;
 }
 
 .clock-label {
@@ -366,7 +374,7 @@ img {
 
 .clock-time {
     font-weight: 600;
-    min-width: 100px;
+    min-width: 86px;
 }
 
 .btn-whatsapp-header {
@@ -3109,6 +3117,38 @@ img {
     color: #94A3B8;
 }
 
+/* Inline Form Validation Styling */
+.form-group.has-error input,
+.form-group.has-error select,
+.form-group.has-error textarea {
+    border-color: #DC2626 !important;
+    background-color: #FEF2F2 !important;
+    box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.15) !important;
+}
+
+.form-group.is-valid input,
+.form-group.is-valid select {
+    border-color: #16A34A !important;
+    background-color: #F0FDF4 !important;
+}
+
+.field-error-msg {
+    display: none;
+    font-family: var(--font-sans);
+    font-size: 11.5px;
+    font-weight: 600;
+    line-height: 1.35;
+    color: #DC2626;
+    margin-top: 3px;
+    animation: fadeIn 0.2s ease;
+}
+
+.form-group.has-error .field-error-msg {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
 .form-group select {
     appearance: none;
     background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23FF5E14' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
@@ -3162,6 +3202,99 @@ img {
     color: var(--c-dark-text-muted);
     line-height: 1.5;
     margin-top: 6px;
+}
+
+/* Form Success State (Netlify Forms & Instant WhatsApp Forwarding) */
+.form-success-state {
+    padding: clamp(24px, 3.2vw, 40px) clamp(20px, 2.5vw, 32px);
+    background: #F0FDF4;
+    border: 1.5px solid #86EFAC;
+    border-top: 4px solid #16A34A;
+    text-align: center;
+    margin-top: 12px;
+    animation: fadeIn var(--transition-med);
+}
+
+.form-success-state .success-icon {
+    width: 52px;
+    height: 52px;
+    margin: 0 auto 16px;
+    background: #16A34A;
+    color: #FFFFFF;
+    font-size: 26px;
+    font-weight: 700;
+    line-height: 52px;
+    border-radius: 50%;
+    box-shadow: 0 6px 18px rgba(22, 163, 74, 0.35);
+}
+
+.form-success-state .success-title {
+    font-family: var(--font-serif);
+    font-size: clamp(20px, 2vw, 25px);
+    font-weight: 700;
+    color: #14532D;
+    margin-bottom: 12px;
+    line-height: 1.25;
+}
+
+.form-success-state .success-desc {
+    font-size: clamp(13px, 0.95vw, 14.5px);
+    line-height: 1.65;
+    color: #166534;
+    max-width: 480px;
+    margin: 0 auto 24px;
+}
+
+.form-success-state .success-desc strong {
+    color: #0F172A;
+}
+
+.form-success-state .success-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+}
+
+.btn-whatsapp-success {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background: #25D366;
+    color: #FFFFFF;
+    text-decoration: none;
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    padding: 14px 26px;
+    box-shadow: 0 6px 20px rgba(37, 211, 102, 0.35);
+    transition: all var(--transition-fast);
+}
+
+.btn-whatsapp-success:hover {
+    background: #1EBE5D;
+    color: #FFFFFF;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 26px rgba(37, 211, 102, 0.45);
+}
+
+.btn-reset-form {
+    background: none;
+    border: none;
+    color: #64748B;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    cursor: pointer;
+    text-decoration: underline;
+    padding: 6px;
+    transition: color var(--transition-fast);
+}
+
+.btn-reset-form:hover {
+    color: #0F172A;
 }
 
 /* ==========================================================================
@@ -3331,6 +3464,308 @@ img {
     margin-top: 10px;
 }
 
+/* Footer Geo SEO / MMR Regional Coverage Bar */
+.footer-geo-bar {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-left: 3px solid var(--c-copper);
+    padding: clamp(20px, 2.5vw, 28px);
+    margin-bottom: clamp(32px, 4vw, 50px);
+}
+
+.geo-bar-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-wrap: wrap;
+    margin-bottom: 18px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.geo-badge {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    color: #FFFFFF;
+    background-color: var(--c-copper);
+    padding: 3px 10px;
+}
+
+.geo-title {
+    font-family: var(--font-sans);
+    font-size: clamp(13px, 1vw, 15px);
+    font-weight: 600;
+    color: rgba(248, 250, 252, 0.85);
+    letter-spacing: 0.02em;
+    margin: 0;
+}
+
+.geo-regions-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: clamp(16px, 2vw, 24px);
+}
+
+.geo-region-item {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.geo-region-name {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: var(--c-amber-gold);
+}
+
+.geo-region-places {
+    font-family: var(--font-sans);
+    font-size: 12px;
+    line-height: 1.55;
+    color: rgba(248, 250, 252, 0.65);
+    margin: 0;
+}
+
+@media (max-width: 991px) {
+    .geo-regions-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 600px) {
+    .geo-regions-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Screen reader only utility for accessible SEO keywords */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+}
+
+/* ==========================================================================
+   Contractor Benchmark / Competitor Comparison Section (SEO / AEO)
+   ========================================================================== */
+.benchmark-section {
+    padding: var(--section-pad) 0;
+    border-top: 1px solid var(--c-beige-border);
+    background-color: var(--c-beige-bg);
+}
+
+.benchmark-table-wrapper {
+    margin-top: clamp(28px, 4vw, 48px);
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    border: 1px solid #D1C9BE;
+    border-radius: 4px;
+    background: #FFFFFF;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+}
+
+.benchmark-table {
+    width: 100%;
+    min-width: 780px;
+    border-collapse: collapse;
+    font-family: var(--font-sans);
+    text-align: left;
+}
+
+.benchmark-table thead tr {
+    border-bottom: 2px solid #D1C9BE;
+}
+
+.benchmark-table th {
+    padding: 22px 24px;
+    vertical-align: bottom;
+}
+
+.bm-col-feature {
+    width: 26%;
+    background: #EDE8DE;
+    color: var(--c-dark-bg);
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    border-right: 1px solid #D1C9BE;
+}
+
+.bm-col-balaji {
+    width: 40%;
+    background: #0B1528;
+    color: #FFFFFF;
+    border-top: 4px solid var(--c-copper);
+    border-left: 1px solid rgba(255, 255, 255, 0.12);
+    border-right: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.bm-brand-tag {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    font-weight: 800;
+    color: var(--c-copper);
+    letter-spacing: 0.1em;
+}
+
+.bm-brand-sub {
+    display: block;
+    font-size: 11px;
+    font-family: var(--font-mono);
+    color: #94A3B8;
+    margin-top: 4px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+}
+
+.bm-col-others {
+    width: 34%;
+    background: #E5DFD4;
+    color: var(--c-dark-bg);
+    border-left: 1px solid #D1C9BE;
+}
+
+.bm-other-tag {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 700;
+    color: #475569;
+    letter-spacing: 0.06em;
+}
+
+.bm-other-sub {
+    display: block;
+    font-size: 11px;
+    font-family: var(--font-mono);
+    color: #64748B;
+    margin-top: 4px;
+    font-weight: 500;
+}
+
+.benchmark-table tbody tr {
+    border-bottom: 1px solid #E8E3D9;
+    transition: background-color var(--transition-fast);
+}
+
+.benchmark-table tbody tr:last-child {
+    border-bottom: none;
+}
+
+.benchmark-table td {
+    padding: 20px 24px;
+    vertical-align: top;
+    font-size: 13px;
+    line-height: 1.55;
+}
+
+.bm-feature {
+    background: #FAF8F5;
+    border-right: 1px solid #E8E3D9;
+}
+
+.bm-feature strong {
+    display: block;
+    font-size: 14px;
+    font-weight: 700;
+    color: #0F172A;
+    margin-bottom: 4px;
+    font-family: var(--font-sans);
+}
+
+.bm-feature span {
+    display: block;
+    font-size: 12px;
+    color: var(--c-beige-text-muted);
+    line-height: 1.45;
+}
+
+.bm-balaji {
+    background: #FFFDF9;
+    border-left: 2px solid rgba(255, 94, 20, 0.18);
+    border-right: 2px solid rgba(255, 94, 20, 0.18);
+}
+
+.benchmark-table tbody tr:hover .bm-balaji {
+    background: #FFF9F0;
+}
+
+.bm-others {
+    background: #FFFFFF;
+}
+
+.benchmark-table tbody tr:hover .bm-others {
+    background: #F8FAFC;
+}
+
+.bm-badge-yes {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    color: #065F46;
+    background: #D1FAE5;
+    border: 1px solid #A7F3D0;
+    padding: 4px 9px;
+    margin-bottom: 8px;
+    border-radius: 2px;
+}
+
+.bm-badge-no {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    color: #991B1B;
+    background: #FEE2E2;
+    border: 1px solid #FECACA;
+    padding: 4px 9px;
+    margin-bottom: 8px;
+    border-radius: 2px;
+}
+
+.bm-badge-risk {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    color: #92400E;
+    background: #FEF3C7;
+    border: 1px solid #FDE68A;
+    padding: 4px 9px;
+    margin-bottom: 8px;
+    border-radius: 2px;
+}
+
+.bm-balaji p,
+.bm-others p {
+    margin: 0;
+    font-size: 13px;
+    color: #334155;
+    line-height: 1.5;
+}
+
 /* Giant Outline Lettering Banner */
 .footer-wireframe-banner {
     width: 100%;
@@ -3369,24 +3804,40 @@ img {
     align-items: center;
     justify-content: space-between;
     flex-wrap: wrap;
-    gap: 12px 20px;
+    gap: 16px 28px;
     font-family: var(--font-mono);
-    font-size: clamp(11px, 0.8vw, 12px);
-    letter-spacing: 0.18em;
+    font-size: clamp(11px, 0.82vw, 12px);
+    letter-spacing: 0.12em;
+    color: #94A3B8;
+    padding-top: clamp(20px, 2.5vw, 28px);
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.footer-credit-wrap {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--font-mono);
+    font-size: clamp(11px, 0.82vw, 12px);
+    letter-spacing: 0.08em;
+}
+
+.footer-credit-label {
     color: #94A3B8;
 }
 
 .footer-credit {
-    color: #94A3B8;
+    color: var(--c-copper);
+    font-weight: 700;
     text-decoration: none;
-    border-bottom: 1px solid transparent;
+    border-bottom: 1px solid rgba(255, 94, 20, 0.4);
     transition: color var(--transition-fast), border-color var(--transition-fast);
 }
 
 .footer-credit:hover,
 .footer-credit:focus-visible {
-    color: var(--c-copper);
-    border-bottom-color: var(--c-copper);
+    color: #FFFFFF;
+    border-bottom-color: #FFFFFF;
 }
 
 .back-to-surface-btn {
@@ -4111,8 +4562,21 @@ body.modal-open {
         --ledger-cols: minmax(0, 1fr) 168px 118px 40px;
     }
 
+    .live-clock {
+        display: none !important;
+    }
+
     .craft-watermark {
         font-size: clamp(120px, 16vw, 190px);
+    }
+}
+
+@media (max-width: 1140px) {
+    .btn-whatsapp-header span {
+        display: none;
+    }
+    .btn-whatsapp-header {
+        padding: 10px 12px;
     }
 }
 
@@ -4210,8 +4674,8 @@ body.modal-open {
     }
 }
 
-/* ---------- 900: header switches to the drawer, single-column narratives ---------- */
-@media (max-width: 900px) {
+/* ---------- 1040: header switches to the drawer, single-column narratives ---------- */
+@media (max-width: 1040px) {
     :root {
         --ledger-cols: minmax(0, 1fr) 120px 88px 30px;
     }

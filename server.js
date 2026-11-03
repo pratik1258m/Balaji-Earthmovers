@@ -2,7 +2,7 @@ const http = require('http');
 const fs = require('fs');
 const path = require('path');
 
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 const MIME_TYPES = {
     '.html': 'text/html',
     '.css': 'text/css',
@@ -18,7 +18,9 @@ const MIME_TYPES = {
     '.webm': 'video/webm',
     '.woff2': 'font/woff2',
     '.woff': 'font/woff',
-    '.ttf': 'font/ttf'
+    '.ttf': 'font/ttf',
+    '.xml': 'application/xml; charset=utf-8',
+    '.txt': 'text/plain; charset=utf-8'
 };
 
 function serve404(req, res) {
@@ -42,6 +44,20 @@ function serve404(req, res) {
 }
 
 const server = http.createServer((req, res) => {
+    // Handle POST submissions (local dev simulation for Netlify Forms)
+    if (req.method === 'POST') {
+        let body = '';
+        req.on('data', chunk => { body += chunk; });
+        req.on('end', () => {
+            res.writeHead(200, {
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*'
+            });
+            res.end(JSON.stringify({ status: 'success', message: 'Netlify form submission received' }));
+        });
+        return;
+    }
+
     const urlPath = decodeURIComponent(req.url.split('?')[0]);
 
     // Forward any legacy browser favicon request (/favicon.ico, /apple-touch-icon.png, /favicon.png)

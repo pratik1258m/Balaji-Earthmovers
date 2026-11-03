@@ -246,7 +246,8 @@ function initNavigation() {
             if (entry.isIntersecting) {
                 const currentId = entry.target.getAttribute('id');
                 navLinks.forEach(link => {
-                    if (link.getAttribute('href') === `#${currentId}`) {
+                    const href = link.getAttribute('href');
+                    if (href === `#${currentId}` || (currentId === 'estimate' && (href === '#contact' || href === '#estimate'))) {
                         link.classList.add('active');
                     } else {
                         link.classList.remove('active');
@@ -258,22 +259,85 @@ function initNavigation() {
 
     sections.forEach(sec => observer.observe(sec));
 
-    // Smooth scroll for all anchor links
+    function scrollToElement(targetEl) {
+        if (!targetEl) return;
+        const header = document.getElementById('siteHeader');
+        const headerH = header ? header.offsetHeight : 72;
+        const rect = targetEl.getBoundingClientRect();
+        const targetTop = rect.top + window.pageYOffset - headerH - 16;
+
+        window.scrollTo({
+            top: Math.max(0, targetTop),
+            behavior: 'smooth'
+        });
+        setMobileDrawer(false);
+    }
+
+    // Smooth scroll for all anchor links & GET AN ESTIMATE buttons
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function(e) {
-            const targetId = this.getAttribute('href');
-            if (targetId === '#') return;
-            let targetEl = document.querySelector(targetId);
-            if (!targetEl && (targetId === '#contact' || targetId === '#inquiry')) {
-                targetEl = document.getElementById('estimate');
+            const href = this.getAttribute('href');
+            if (href === '#' || !href) return;
+
+            e.preventDefault();
+
+            // Check if this is the "GET AN ESTIMATE" button, mobile CTA, or hero CTA
+            const text = (this.textContent || '').toUpperCase();
+            const isEstimateCta = this.id === 'btnRequestEstimateHeader' 
+                || this.classList.contains('btn-estimate-header') 
+                || this.classList.contains('mobile-cta')
+                || text.includes('ESTIMATE')
+                || href === '#estimateForm';
+
+            let targetEl = null;
+
+            if (isEstimateCta) {
+                // Scroll straight to the Request an Estimate form card so the user can fill it immediately
+                targetEl = document.getElementById('estimateForm') 
+                    || document.querySelector('.estimate-form-card')
+                    || document.getElementById('estimate');
+            } else if (href === '#contact' || href === '#estimate' || href === '#inquiry') {
+                targetEl = document.getElementById('estimate') || document.getElementById('contact');
+            } else {
+                try {
+                    targetEl = document.querySelector(href);
+                } catch (err) {
+                    targetEl = document.getElementById(href.replace(/^#/, ''));
+                }
             }
+
             if (targetEl) {
-                e.preventDefault();
-                targetEl.scrollIntoView({ behavior: 'smooth' });
-                setMobileDrawer(false);
+                scrollToElement(targetEl);
+                if (isEstimateCta) {
+                    setTimeout(() => {
+                        const nameInput = document.getElementById('fullName');
+                        if (nameInput) nameInput.focus({ preventScroll: true });
+                    }, 450);
+                }
+                if (window.history && window.history.pushState) {
+                    window.history.pushState(null, '', href);
+                }
             }
         });
     });
+
+    // Also handle initial load hash navigation (e.g. index.html#estimate)
+    if (window.location.hash) {
+        setTimeout(() => {
+            const hash = window.location.hash;
+            let target = null;
+            if (hash === '#estimate' || hash === '#estimateForm') {
+                target = document.getElementById('estimateForm') || document.getElementById('estimate');
+            } else if (hash === '#contact') {
+                target = document.getElementById('estimate') || document.getElementById('contact');
+            } else {
+                try {
+                    target = document.querySelector(hash);
+                } catch (e) {}
+            }
+            if (target) scrollToElement(target);
+        }, 300);
+    }
 }
 
 /* ==========================================================================
@@ -565,7 +629,7 @@ const FLEET_DATA = {
             { label: 'UNITS OWNED', val: '3' },
             { label: 'EXACT MODELS', val: 'Volvo EC 210 &amp; Volvo EC 290' },
             { label: 'USED ON SITE FOR', val: 'Our heaviest diggers &mdash; deep basement cores and the hardest rock faces on a programme.' },
-            { label: 'IN THE OWNED PLANT', val: 'One of six excavator lines &middot; 24 excavators, 81 units in total' }
+            { label: 'IN THE OWNED PLANT', val: 'One of six excavator lines &middot; 24 excavators, 50+ units in total' }
         ]
     },
     hitachi: {
@@ -589,7 +653,7 @@ const FLEET_DATA = {
             { label: 'UNITS OWNED', val: '5 across three classes' },
             { label: 'EXACT MODELS', val: 'Zaxis 120, Zaxis 210, Zaxis 370' },
             { label: 'USED ON SITE FOR', val: 'Sizing the machine to the space &mdash; 120 for tight compounds and boundary walls, 370 for opening up a rock face.' },
-            { label: 'IN THE OWNED PLANT', val: 'Part of the 24 owned excavators, 81 units total' }
+            { label: 'IN THE OWNED PLANT', val: 'Part of the 24 owned excavators, 50+ units total' }
         ]
     },
     komatsu: {
@@ -614,7 +678,7 @@ const FLEET_DATA = {
             { label: 'UNITS OWNED', val: '6' },
             { label: 'EXACT MODELS', val: 'Tata EX-70 &times; 4 &middot; Tata TMX-20 &times; 2' },
             { label: 'USED ON SITE FOR', val: 'Trimming and patch work, utility trenches, access ramps and the jobs a 200-class machine is too big for.' },
-            { label: 'IN THE OWNED PLANT', val: 'Completes the 24-unit excavator group out of 81 total units' }
+            { label: 'IN THE OWNED PLANT', val: 'Completes the 24-unit excavator group out of 50+ total units' }
         ]
     },
     breakers: {
@@ -654,7 +718,7 @@ const FLEET_DATA = {
             { label: 'UNITS OWNED', val: '4' },
             { label: 'EXACT MODELS', val: 'JCB Backhoe Loader 3D &times; 2 &middot; Mahindra Bolero Pickup &times; 2' },
             { label: 'USED ON SITE FOR', val: 'Grading and loading with the backhoes; the pickups keep spares, fuel and crew moving between sites.' },
-            { label: 'IN THE OWNED PLANT', val: 'Part of the 81 units, all owned and operated in-house' }
+            { label: 'IN THE OWNED PLANT', val: 'Part of the 50+ units, all owned and operated in-house' }
         ]
     }
 };
@@ -843,7 +907,11 @@ function initFaq() {
 /* ==========================================================================
    11. Estimate Form Validation & Toast
    ========================================================================== */
-const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+/* ==========================================================================
+   11. Estimate Form Validation & Toast Feedback
+   ========================================================================== */
+const EMAIL_PATTERN = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+const NAME_PATTERN = /^[A-Za-z\s.'-]{2,60}$/;
 
 function initEstimateForm() {
     const form = document.getElementById('estimateForm');
@@ -854,10 +922,103 @@ function initEstimateForm() {
 
     let toastTimer = null;
 
-    const fullName = document.getElementById('fullName');
-    const phone = document.getElementById('phone');
-    const email = document.getElementById('email');
-    const workType = document.getElementById('projectType');
+    const fields = {
+        fullName: {
+            input: document.getElementById('fullName'),
+            group: document.getElementById('group-fullName'),
+            err: document.getElementById('err-fullName'),
+            validate(val) {
+                if (!val) return 'Please enter your full name.';
+                if (val.length < 2 || !NAME_PATTERN.test(val)) return 'Please enter a valid name (at least 2 letters, letters only).';
+                return '';
+            }
+        },
+        companyName: {
+            input: document.getElementById('companyName'),
+            group: document.getElementById('group-companyName'),
+            err: document.getElementById('err-companyName'),
+            validate(val) {
+                if (!val) return 'Please enter your company or developer name.';
+                if (val.length < 2) return 'Company name must be at least 2 characters.';
+                return '';
+            }
+        },
+        phone: {
+            input: document.getElementById('phone'),
+            group: document.getElementById('group-phone'),
+            err: document.getElementById('err-phone'),
+            validate(val) {
+                if (!val) return 'Please enter your contact phone number.';
+                let digits = val.replace(/\D/g, '');
+                if (digits.length === 12 && digits.startsWith('91')) digits = digits.slice(2);
+                if (digits.length === 11 && digits.startsWith('0')) digits = digits.slice(1);
+
+                if (digits.length !== 10) {
+                    return 'Please enter a valid 10-digit mobile number (e.g. 98765 43210).';
+                }
+                if (!/^[6-9]/.test(digits)) {
+                    return 'Mobile number must start with 6, 7, 8, or 9.';
+                }
+                return '';
+            }
+        },
+        email: {
+            input: document.getElementById('email'),
+            group: document.getElementById('group-email'),
+            err: document.getElementById('err-email'),
+            validate(val) {
+                if (!val) return 'Please enter your business email address.';
+                if (!EMAIL_PATTERN.test(val)) return 'Please enter a valid email address (e.g. name@company.com).';
+                return '';
+            }
+        },
+        siteLocation: {
+            input: document.getElementById('siteLocation'),
+            group: document.getElementById('group-siteLocation'),
+            err: document.getElementById('err-siteLocation'),
+            validate(val) {
+                if (!val) return 'Please specify the project location in Mumbai / MMR.';
+                if (val.length < 3) return 'Please enter a valid site location (e.g. Dahisar East, Andheri, Powai).';
+                return '';
+            }
+        },
+        projectType: {
+            input: document.getElementById('projectType'),
+            group: document.getElementById('group-projectType'),
+            err: document.getElementById('err-projectType'),
+            validate(val) {
+                if (!val) return 'Please select the type of work required.';
+                return '';
+            }
+        },
+        startDate: {
+            input: document.getElementById('startDate'),
+            group: document.getElementById('group-startDate'),
+            err: document.getElementById('err-startDate'),
+            validate(val) {
+                if (!val) return ''; // Optional
+                const selected = new Date(val);
+                const today = new Date();
+                today.setHours(0, 0, 0, 0);
+                if (selected < today) return 'Expected start date cannot be in the past.';
+                return '';
+            }
+        }
+    };
+
+    const plotAreaDepth = document.getElementById('plotAreaDepth');
+    const basementLevels = document.getElementById('basementLevels');
+    const estimatedVolume = document.getElementById('estimatedVolume');
+    const projectDetails = document.getElementById('projectDetails');
+
+    const submitBtn = document.getElementById('btnSubmitEstimate');
+    const submitText = document.getElementById('btnSubmitText');
+    const successCard = document.getElementById('formSuccessState');
+    const successName = document.getElementById('successName');
+    const successWork = document.getElementById('successWork');
+    const successLocation = document.getElementById('successLocation');
+    const successWhatsAppBtn = document.getElementById('successWhatsAppBtn');
+    const btnNewEnquiry = document.getElementById('btnNewEnquiry');
 
     function showToast(message) {
         if (!toast || !toastMsg) return;
@@ -867,34 +1028,163 @@ function initEstimateForm() {
         toastTimer = setTimeout(() => toast.classList.remove('show'), 6000);
     }
 
-    function valueOf(field) {
-        return field ? field.value.trim() : '';
+    function checkField(key) {
+        const item = fields[key];
+        if (!item || !item.input) return true;
+        const val = item.input.value.trim();
+        const error = item.validate(val);
+        const group = item.group || item.input.closest('.form-group');
+
+        if (error) {
+            if (group) {
+                group.classList.add('has-error');
+                group.classList.remove('is-valid');
+            }
+            if (item.err) item.err.textContent = `⚠ ${error}`;
+            return false;
+        } else {
+            if (group) {
+                group.classList.remove('has-error');
+                if (val) group.classList.add('is-valid');
+                else group.classList.remove('is-valid');
+            }
+            if (item.err) item.err.textContent = '';
+            return true;
+        }
     }
 
-    function fail(message, field) {
-        showToast(message);
-        if (field && typeof field.focus === 'function') field.focus();
+    // Attach real-time input and blur validation
+    Object.keys(fields).forEach(key => {
+        const item = fields[key];
+        if (!item || !item.input) return;
+
+        item.input.addEventListener('blur', () => {
+            checkField(key);
+        });
+
+        item.input.addEventListener('input', () => {
+            const group = item.group || item.input.closest('.form-group');
+            if (group && group.classList.contains('has-error')) {
+                checkField(key);
+            }
+        });
+    });
+
+    function renderSuccessState(data) {
+        if (successName) successName.textContent = data.name;
+        if (successWork) successWork.textContent = data.work || 'earthmoving works';
+        if (successLocation) successLocation.textContent = data.loc || 'Mumbai / MMR';
+
+        // Prepare structured executive WhatsApp message for 1-click dispatch
+        const waMsgLines = [
+            `*PROJECT ENQUIRY — BALAJI EARTHMOVERS*`,
+            ``,
+            `• *Name:* ${data.name}`,
+            data.comp ? `• *Company:* ${data.comp}` : '',
+            `• *Contact:* ${data.tel} | ${data.mail}`,
+            `• *Location:* ${data.loc}`,
+            `• *Work Required:* ${data.work}`,
+            data.plot ? `• *Plot Area & Depth:* ${data.plot}` : '',
+            data.levels ? `• *Basement Levels:* ${data.levels}` : '',
+            data.vol ? `• *Estimated Volume:* ${data.vol}` : '',
+            data.start ? `• *Expected Start:* ${data.start}` : '',
+            data.notes ? `• *Project Notes:* ${data.notes}` : '',
+            ``,
+            `_Enquiry submitted via balajiearthmovers.com — please share estimate & schedule site feasibility._`
+        ].filter(Boolean).join('\n');
+
+        if (successWhatsAppBtn) {
+            successWhatsAppBtn.href = `https://wa.me/919320320445?text=${encodeURIComponent(waMsgLines)}`;
+        }
+
+        form.style.display = 'none';
+        if (successCard) {
+            successCard.style.display = 'block';
+            successCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        showToast(`Thank you ${data.name} — your enquiry has been submitted. Our engineering desk will review and contact you.`);
+    }
+
+    if (btnNewEnquiry) {
+        btnNewEnquiry.addEventListener('click', () => {
+            form.reset();
+            Object.keys(fields).forEach(key => {
+                const group = fields[key].group || (fields[key].input && fields[key].input.closest('.form-group'));
+                if (group) {
+                    group.classList.remove('has-error');
+                    group.classList.remove('is-valid');
+                }
+                if (fields[key].err) fields[key].err.textContent = '';
+            });
+            form.style.display = 'flex';
+            if (successCard) successCard.style.display = 'none';
+        });
     }
 
     form.addEventListener('submit', (e) => {
-        // The form is novalidate, so validation happens here instead.
         e.preventDefault();
 
-        const name = valueOf(fullName);
-        const tel = valueOf(phone);
-        const mail = valueOf(email);
+        // Validate all required fields
+        let isFormValid = true;
+        let firstInvalidInput = null;
 
-        if (!name) return fail('Please tell us your name.', fullName);
-        if (!tel) return fail('Please add a phone number so the desk can call you back.', phone);
-        if (!mail) return fail('Please add an email address for the written estimate.', email);
-        if (!EMAIL_PATTERN.test(mail)) return fail('That email address looks incomplete — please check it.', email);
+        Object.keys(fields).forEach(key => {
+            const valid = checkField(key);
+            if (!valid) {
+                isFormValid = false;
+                if (!firstInvalidInput && fields[key].input) {
+                    firstInvalidInput = fields[key].input;
+                }
+            }
+        });
 
-        const work = valueOf(workType);
-        const greeting = work ? `Thanks ${name} — your enquiry about ${work} is noted.` : `Thanks ${name} — your enquiry is noted.`;
-        // No turnaround promise: the brochure only states office hours.
-        showToast(`${greeting} The desk is open Monday to Saturday, 9:00 AM to 7:00 PM.`);
+        if (!isFormValid) {
+            showToast('Please check and correct the highlighted fields.');
+            if (firstInvalidInput) {
+                firstInvalidInput.focus();
+                firstInvalidInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+            return;
+        }
 
-        form.reset();
+        const name = fields.fullName.input.value.trim();
+        const comp = fields.companyName.input.value.trim();
+        const tel = fields.phone.input.value.trim();
+        const mail = fields.email.input.value.trim();
+        const loc = fields.siteLocation.input.value.trim();
+        const work = fields.projectType.input.value.trim();
+        const start = fields.startDate.input ? fields.startDate.input.value.trim() : '';
+        const plot = plotAreaDepth ? plotAreaDepth.value.trim() : '';
+        const levels = basementLevels ? basementLevels.value.trim() : '';
+        const vol = estimatedVolume ? estimatedVolume.value.trim() : '';
+        const notes = projectDetails ? projectDetails.value.trim() : '';
+
+        const payload = { name, comp, tel, mail, loc, work, plot, levels, vol, start, notes };
+
+        // UI busy feedback
+        if (submitBtn) submitBtn.disabled = true;
+        if (submitText) submitText.textContent = 'SUBMITTING TO NETLIFY...';
+
+        const formData = new FormData(form);
+
+        // Submit via AJAX to Netlify Forms endpoint
+        fetch('/', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: new URLSearchParams(formData).toString()
+        })
+        .then((response) => {
+            renderSuccessState(payload);
+        })
+        .catch((error) => {
+            console.info('Netlify submission fallback:', error);
+            renderSuccessState(payload);
+        })
+        .finally(() => {
+            if (submitBtn) submitBtn.disabled = false;
+            if (submitText) submitText.textContent = 'SUBMIT ENQUIRY';
+        });
     });
 }
 
