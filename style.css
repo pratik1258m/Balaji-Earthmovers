@@ -5020,52 +5020,6 @@ body.modal-open {
     display: block;
 }
 
-/* File Upload Box */
-.file-upload-box {
-    position: relative;
-    border: 1px dashed var(--c-beige-border);
-    background-color: var(--c-beige-bg);
-    padding: 14px 16px;
-    border-radius: 2px;
-    display: flex;
-    align-items: center;
-    transition: border-color var(--transition-fast), background-color var(--transition-fast);
-}
-
-.file-upload-box:hover {
-    border-color: var(--c-copper);
-    background-color: #FFFFFF;
-}
-
-.file-input {
-    width: 100%;
-    cursor: pointer;
-    font-size: 13px;
-    color: var(--c-beige-text-muted);
-}
-
-.file-input::file-selector-button {
-    font-family: var(--font-mono);
-    font-size: 11px;
-    letter-spacing: 0.08em;
-    font-weight: 700;
-    background-color: var(--c-dark-bg);
-    color: #FFFFFF;
-    border: none;
-    padding: 6px 12px;
-    margin-right: 12px;
-    cursor: pointer;
-    border-radius: 2px;
-    transition: background-color var(--transition-fast);
-}
-
-.file-input::file-selector-button:hover {
-    background-color: var(--c-copper);
-}
-
-.file-custom-prompt {
-    display: none;
-}
 
 @media (max-width: 991px) {
     .about-grid {
