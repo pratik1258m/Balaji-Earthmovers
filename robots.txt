@@ -1,11 +1,12 @@
-# robots.txt for Balaji Earthmovers (https://balajiearthmovers.com)
+# robots.txt for Balaji Earthmovers Mumbai (https://balajiearthmoversmumbai.com)
 User-agent: *
 Allow: /
 Disallow: /scratch/
 Disallow: /brain/
 
 # Sitemaps
-Sitemap: https://balajiearthmovers.com/sitemap.xml
+Sitemap: https://balajiearthmoversmumbai.com/sitemap.xml
+Host: https://balajiearthmoversmumbai.com
 
 # AI & Search Engine Crawlers
 User-agent: Googlebot

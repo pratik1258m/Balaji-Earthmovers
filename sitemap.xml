@@ -3,40 +3,40 @@
         xmlns:video="http://www.google.com/schemas/sitemap-video/1.1"
         xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   <url>
-    <loc>https://balajiearthmovers.com/</loc>
-    <lastmod>2026-11-03</lastmod>
+    <loc>https://balajiearthmoversmumbai.com/</loc>
+    <lastmod>2026-11-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
     <image:image>
-      <image:loc>https://balajiearthmovers.com/images/hero-cinematic-2x.webp</image:loc>
-      <image:title>Balaji Earthmovers Excavation and Rock Breaking Mumbai</image:title>
+      <image:loc>https://balajiearthmoversmumbai.com/images/hero-cinematic-2x.webp</image:loc>
+      <image:title>Balaji Earthmovers Mumbai Excavation and Rock Breaking</image:title>
       <image:caption>Heavy excavator operating on deep basement excavation site in Mumbai</image:caption>
     </image:image>
     <image:image>
-      <image:loc>https://balajiearthmovers.com/images/site-mumbai.webp</image:loc>
+      <image:loc>https://balajiearthmoversmumbai.com/images/site-mumbai.webp</image:loc>
       <image:title>Mumbai High-Rise Construction Site Excavation</image:title>
     </image:image>
     <video:video>
-      <video:thumbnail_loc>https://balajiearthmovers.com/images/gallery-3.webp</video:thumbnail_loc>
+      <video:thumbnail_loc>https://balajiearthmoversmumbai.com/images/gallery-3.webp</video:thumbnail_loc>
       <video:title>Deep Basement Excavation in Mumbai</video:title>
       <video:description>Panoramic on-site view of multi-level basement excavation with crawler excavators and heavy dumpers in Mumbai.</video:description>
-      <video:content_loc>https://balajiearthmovers.com/video/basement-excavation-panoramic.mp4</video:content_loc>
+      <video:content_loc>https://balajiearthmoversmumbai.com/video/basement-excavation-panoramic.mp4</video:content_loc>
       <video:publication_date>2026-10-29T09:30:00+05:30</video:publication_date>
       <video:family_friendly>yes</video:family_friendly>
     </video:video>
     <video:video>
-      <video:thumbnail_loc>https://balajiearthmovers.com/images/gallery-1.webp</video:thumbnail_loc>
+      <video:thumbnail_loc>https://balajiearthmoversmumbai.com/images/gallery-1.webp</video:thumbnail_loc>
       <video:title>Bulk Earthmoving &amp; Haulage Operations</video:title>
       <video:description>Heavy excavator loading excavated rock and soil into 16-ton Hyva tipper truck on Mumbai project site.</video:description>
-      <video:content_loc>https://balajiearthmovers.com/video/komatsu-loading-hyva.mp4</video:content_loc>
+      <video:content_loc>https://balajiearthmoversmumbai.com/video/komatsu-loading-hyva.mp4</video:content_loc>
       <video:publication_date>2026-10-29T09:30:00+05:30</video:publication_date>
       <video:family_friendly>yes</video:family_friendly>
     </video:video>
     <video:video>
-      <video:thumbnail_loc>https://balajiearthmovers.com/images/gallery-2.webp</video:thumbnail_loc>
+      <video:thumbnail_loc>https://balajiearthmoversmumbai.com/images/gallery-2.webp</video:thumbnail_loc>
       <video:title>Hydraulic Rock Breaking Without Blasting</video:title>
       <video:description>Heavy excavator equipped with hydraulic rock breaker executing non-explosive controlled rock breaking in Mumbai.</video:description>
-      <video:content_loc>https://balajiearthmovers.com/video/volvo-rock-breaking.mp4</video:content_loc>
+      <video:content_loc>https://balajiearthmoversmumbai.com/video/volvo-rock-breaking.mp4</video:content_loc>
       <video:publication_date>2026-10-29T09:30:00+05:30</video:publication_date>
       <video:family_friendly>yes</video:family_friendly>
     </video:video>
