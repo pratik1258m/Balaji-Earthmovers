@@ -3531,6 +3531,36 @@ img {
     margin: 0;
 }
 
+.geo-services-row {
+    margin-top: 18px;
+    padding-top: 14px;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.geo-services-label {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: var(--c-amber-gold);
+}
+
+.geo-services-list {
+    font-family: var(--font-sans);
+    font-size: 11.5px;
+    line-height: 1.6;
+    color: rgba(248, 250, 252, 0.6);
+    margin: 0;
+}
+
+.geo-services-list strong {
+    color: rgba(248, 250, 252, 0.85);
+    font-weight: 600;
+}
+
 @media (max-width: 991px) {
     .geo-regions-grid {
         grid-template-columns: repeat(2, 1fr);
