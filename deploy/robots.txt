@@ -1,0 +1,32 @@
+# robots.txt for Balaji Earthmovers Mumbai (https://balajiearthmoversmumbai.com)
+User-agent: *
+Allow: /
+Disallow: /scratch/
+Disallow: /brain/
+
+# Sitemaps
+Sitemap: https://balajiearthmoversmumbai.com/sitemap.xml
+Host: https://balajiearthmoversmumbai.com
+
+# AI & Search Engine Crawlers
+User-agent: Googlebot
+Allow: /
+
+User-agent: Googlebot-Image
+Allow: /images/
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: GPTBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Applebot
+Allow: /
+
