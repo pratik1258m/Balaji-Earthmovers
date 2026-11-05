@@ -1171,8 +1171,8 @@ function initEstimateForm() {
             formData.set('_replyto', mail);
         }
 
-        // Submit via AJAX to FormSubmit endpoint forwarding directly to balaji_transport5268@gmail.com
-        fetch('https://formsubmit.co/ajax/balaji_transport5268@gmail.com', {
+        // Submit via AJAX to FormSubmit endpoint forwarding directly to pratikmishra206@gmail.com (Testing)
+        fetch('https://formsubmit.co/ajax/pratikmishra206@gmail.com', {
             method: 'POST',
             headers: {
                 'Accept': 'application/json'
