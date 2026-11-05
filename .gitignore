@@ -5,5 +5,3 @@ Thumbs.db
 *.docx
 *.xlsx
 deploy/
-deploy/
-*.xlsx
