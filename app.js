@@ -1164,21 +1164,26 @@ function initEstimateForm() {
 
         // UI busy feedback
         if (submitBtn) submitBtn.disabled = true;
-        if (submitText) submitText.textContent = 'SUBMITTING TO NETLIFY...';
+        if (submitText) submitText.textContent = 'SENDING ENQUIRY...';
 
         const formData = new FormData(form);
+        if (mail) {
+            formData.set('_replyto', mail);
+        }
 
-        // Submit via AJAX to Netlify Forms endpoint
-        fetch('/', {
+        // Submit via AJAX to FormSubmit endpoint forwarding directly to balaji_transport5268@gmail.com
+        fetch('https://formsubmit.co/ajax/balaji_transport5268@gmail.com', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            body: new URLSearchParams(formData).toString()
+            headers: {
+                'Accept': 'application/json'
+            },
+            body: formData
         })
         .then((response) => {
             renderSuccessState(payload);
         })
         .catch((error) => {
-            console.info('Netlify submission fallback:', error);
+            console.info('Form submission fallback:', error);
             renderSuccessState(payload);
         })
         .finally(() => {
