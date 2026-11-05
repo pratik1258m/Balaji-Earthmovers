@@ -536,10 +536,63 @@
     <!-- Netlify Badge & Drawer Permanent Hide -->
     <style>
         #nl-badge-frame,
-        iframe[title="Powered by Netlify"],
+        .nl-badge-frame,
+        iframe.nl-badge-frame,
+        iframe#nl-badge-frame,
+        iframe[title*="Netlify"],
         iframe[src*="netlify"],
         iframe[id*="netlify"],
         iframe[id*="nl-badge"],
+        #netlify-badge,
+        .netlify-badge,
+        #netlify-drawer,
+        iframe#netlify-drawer,
+        [data-netlify-drawer],
+        [data-netlify-badge],
+        .netlify-drawer-container,
+        div[id*="netlify"],
+        div[class*="netlify"],
+        a[href*="netlify.com"][class*="badge"],
+        a[href*="netlify.com"][id*="badge"],
+        #netlify-collaborative-tools,
+        netlify-drawer {
+            display: none !important;
+            visibility: hidden !important;
+            opacity: 0 !important;
+            pointer-events: none !important;
+            position: absolute !important;
+            width: 0 !important;
+            height: 0 !important;
+            top: -9999px !important;
+            left: -9999px !important;
+            z-index: -9999 !important;
+        }
+    </style>
+    <script>
+        (function() {
+            function purgeNetlifyBadges() {
+                var targets = document.querySelectorAll('#nl-badge-frame, .nl-badge-frame, iframe.nl-badge-frame, iframe[title*="Netlify"], iframe[src*="netlify"], #netlify-badge, .netlify-badge, netlify-drawer, iframe#netlify-drawer, [data-netlify-drawer], [data-netlify-badge], .netlify-drawer-container, #netlify-collaborative-tools, a[href*="netlify.com"]');
+                for (var i = 0; i < targets.length; i++) {
+                    var el = targets[i];
+                    if (el) {
+                        el.remove();
+                    }
+                }
+            }
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', purgeNetlifyBadges);
+            } else {
+                purgeNetlifyBadges();
+            }
+            try {
+                var obs = new MutationObserver(purgeNetlifyBadges);
+                obs.observe(document.documentElement, { childList: true, subtree: true });
+            } catch(e) {}
+        })();
+    </script>
+
+    <!-- Netlify Badge & Drawer Permanent Hide -->
+    <style>
         #netlify-badge,
         .netlify-badge,
         #netlify-drawer,

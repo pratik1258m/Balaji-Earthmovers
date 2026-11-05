@@ -6213,7 +6213,10 @@ img {
 
 /* Netlify Injected Badge & Collaboration Drawer Failsafe */
 #nl-badge-frame,
-iframe[title="Powered by Netlify"],
+.nl-badge-frame,
+iframe.nl-badge-frame,
+iframe#nl-badge-frame,
+iframe[title*="Netlify"],
 iframe[src*="netlify"],
 iframe[id*="netlify"],
 iframe[id*="nl-badge"],
@@ -6222,6 +6225,7 @@ iframe[id*="nl-badge"],
 #netlify-drawer,
 iframe#netlify-drawer,
 [data-netlify-drawer],
+[data-netlify-badge],
 .netlify-drawer-container,
 div[id*="netlify-badge"] {
     display: none !important;
