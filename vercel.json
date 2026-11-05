@@ -1,6 +1,12 @@
 {
   "cleanUrls": true,
   "trailingSlash": false,
+  "rewrites": [
+    {
+      "source": "/googleb9519ecd696ef985.html",
+      "destination": "/googleb9519ecd696ef985.html"
+    }
+  ],
   "headers": [
     {
       "source": "/images/(.*)",
@@ -40,4 +46,3 @@
     }
   ]
 }
-
