@@ -4,7 +4,7 @@
         xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   <url>
     <loc>https://balajiearthmoversmumbai.com/</loc>
-    <lastmod>2026-11-05</lastmod>
+    <lastmod>2026-11-06</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
     <image:image>
@@ -15,9 +15,40 @@
     <image:image>
       <image:loc>https://balajiearthmoversmumbai.com/images/site-mumbai.webp</image:loc>
       <image:title>Mumbai High-Rise Construction Site Excavation</image:title>
+      <image:caption>Earthmoving contractor site with excavators and dumpers at a Mumbai construction plot</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://balajiearthmoversmumbai.com/images/fleet-volvo-excavator.webp</image:loc>
+      <image:title>Volvo EC 210 Crawler Excavator On Hire Mumbai</image:title>
+      <image:caption>Volvo crawler excavator used for soil excavation and earthwork in Mumbai and MMR</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://balajiearthmoversmumbai.com/images/fleet-breaker.webp</image:loc>
+      <image:title>Hydraulic Rock Breaker Attachment For Non-Explosive Breaking Mumbai</image:title>
+      <image:caption>Excavator-mounted hydraulic rock breaker for hard rock excavation without blasting</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://balajiearthmoversmumbai.com/images/gallery-komatsu-loading.webp</image:loc>
+      <image:title>Komatsu Excavator Loading Muck Into Hyva Tipper Mumbai</image:title>
+      <image:caption>Soil and muck removal with excavator and 16-ton Hyva tipper on a Mumbai site</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://balajiearthmoversmumbai.com/images/gallery-muck-haulage.webp</image:loc>
+      <image:title>Muck Haulage And Spoil Cartaway Services Mumbai</image:title>
+      <image:caption>Dumper fleet hauling excavated spoil away from a Mumbai excavation site</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://balajiearthmoversmumbai.com/images/site-dozer.webp</image:loc>
+      <image:title>Site Levelling And Plot Development With Dozer Mumbai</image:title>
+      <image:caption>Dozer used for land levelling, filling and plot grading in Mumbai and MMR</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://balajiearthmoversmumbai.com/images/mach-jcb.webp</image:loc>
+      <image:title>JCB 3DX Backhoe Loader On Hire Mumbai</image:title>
+      <image:caption>JCB backhoe loader for trenching, loading and small excavation work in Mumbai</image:caption>
     </image:image>
     <video:video>
-      <video:thumbnail_loc>https://balajiearthmoversmumbai.com/images/gallery-3.webp</video:thumbnail_loc>
+      <video:thumbnail_loc>https://balajiearthmoversmumbai.com/images/hero-cinematic-2x.webp</video:thumbnail_loc>
       <video:title>Deep Basement Excavation in Mumbai</video:title>
       <video:description>Panoramic on-site view of multi-level basement excavation with crawler excavators and heavy dumpers in Mumbai.</video:description>
       <video:content_loc>https://balajiearthmoversmumbai.com/video/basement-excavation-panoramic.mp4</video:content_loc>
@@ -25,7 +56,7 @@
       <video:family_friendly>yes</video:family_friendly>
     </video:video>
     <video:video>
-      <video:thumbnail_loc>https://balajiearthmoversmumbai.com/images/gallery-1.webp</video:thumbnail_loc>
+      <video:thumbnail_loc>https://balajiearthmoversmumbai.com/images/gallery-komatsu-loading.webp</video:thumbnail_loc>
       <video:title>Bulk Earthmoving &amp; Haulage Operations</video:title>
       <video:description>Heavy excavator loading excavated rock and soil into 16-ton Hyva tipper truck on Mumbai project site.</video:description>
       <video:content_loc>https://balajiearthmoversmumbai.com/video/komatsu-loading-hyva.mp4</video:content_loc>
@@ -33,7 +64,7 @@
       <video:family_friendly>yes</video:family_friendly>
     </video:video>
     <video:video>
-      <video:thumbnail_loc>https://balajiearthmoversmumbai.com/images/gallery-2.webp</video:thumbnail_loc>
+      <video:thumbnail_loc>https://balajiearthmoversmumbai.com/images/fleet-breaker.webp</video:thumbnail_loc>
       <video:title>Hydraulic Rock Breaking Without Blasting</video:title>
       <video:description>Heavy excavator equipped with hydraulic rock breaker executing non-explosive controlled rock breaking in Mumbai.</video:description>
       <video:content_loc>https://balajiearthmoversmumbai.com/video/volvo-rock-breaking.mp4</video:content_loc>
@@ -42,4 +73,3 @@
     </video:video>
   </url>
 </urlset>
-

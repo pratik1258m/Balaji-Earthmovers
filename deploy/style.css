@@ -3204,8 +3204,9 @@ img {
     margin-top: 6px;
 }
 
-/* Form Success State (Netlify Forms & Instant WhatsApp Forwarding) */
-.form-success-state {
+/* Form Result States (delivered / not delivered) + Instant WhatsApp Forwarding */
+.form-success-state,
+.form-fail-state {
     padding: clamp(24px, 3.2vw, 40px) clamp(20px, 2.5vw, 32px);
     background: #F0FDF4;
     border: 1.5px solid #86EFAC;
@@ -3215,7 +3216,8 @@ img {
     animation: fadeIn var(--transition-med);
 }
 
-.form-success-state .success-icon {
+.form-success-state .success-icon,
+.form-fail-state .fail-icon {
     width: 52px;
     height: 52px;
     margin: 0 auto 16px;
@@ -3228,7 +3230,8 @@ img {
     box-shadow: 0 6px 18px rgba(22, 163, 74, 0.35);
 }
 
-.form-success-state .success-title {
+.form-success-state .success-title,
+.form-fail-state .fail-title {
     font-family: var(--font-serif);
     font-size: clamp(20px, 2vw, 25px);
     font-weight: 700;
@@ -3237,7 +3240,8 @@ img {
     line-height: 1.25;
 }
 
-.form-success-state .success-desc {
+.form-success-state .success-desc,
+.form-fail-state .fail-desc {
     font-size: clamp(13px, 0.95vw, 14.5px);
     line-height: 1.65;
     color: #166534;
@@ -3249,11 +3253,31 @@ img {
     color: #0F172A;
 }
 
-.form-success-state .success-actions {
+.form-success-state .success-actions,
+.form-fail-state .fail-actions {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 12px;
+}
+
+.form-fail-state {
+    background: #FFF7ED;
+    border-color: #FDBA74;
+    border-top-color: #EA580C;
+}
+
+.form-fail-state .fail-icon {
+    background: #EA580C;
+    box-shadow: 0 6px 18px rgba(234, 88, 12, 0.35);
+}
+
+.form-fail-state .fail-title {
+    color: #7C2D12;
+}
+
+.form-fail-state .fail-desc {
+    color: #9A3412;
 }
 
 .btn-whatsapp-success {
@@ -3896,7 +3920,10 @@ img {
    ========================================================================== */
 .floating-contact-beacon {
     position: fixed;
-    bottom: calc(22px + var(--safe-bottom));
+    /* Netlify's corner frame is a fixed 216x92 box at bottom-right
+       (hud.js: position:fixed;bottom:0;right:0;z-index:2147483645). Starting the
+       stack 100px up keeps every pill clear of it, badge present or not. */
+    bottom: calc(100px + var(--safe-bottom));
     right: calc(18px + var(--safe-right));
     z-index: 999;
     display: flex;
@@ -4006,7 +4033,7 @@ img {
 
 @media (max-width: 560px) {
     .floating-contact-beacon {
-        bottom: calc(12px + var(--safe-bottom));
+        bottom: calc(100px + var(--safe-bottom));
         right: calc(12px + var(--safe-right));
         gap: 6px;
     }
@@ -4966,9 +4993,10 @@ body.modal-open {
         grid-column: span 1;
     }
 
-    /* Toast must clear the floating call beacon on phones */
+    /* Toast must clear the floating call beacon on phones. Stack now runs
+       100px -> 174px above the viewport bottom, so the toast starts at 186. */
     .toast-notification {
-        bottom: calc(86px + var(--safe-bottom));
+        bottom: calc(186px + var(--safe-bottom));
         left: calc(14px + var(--safe-left));
         right: calc(14px + var(--safe-right));
         max-width: none;
@@ -4978,7 +5006,8 @@ body.modal-open {
         justify-content: flex-start;
     }
 
-    /* the fixed call beacon sits over the last footer row on phones */
+    /* the fixed call beacon sits over the last footer row on phones. Its items
+       are left-packed here, so the corner the beacon owns holds no text. */
     .site-footer {
         padding-bottom: calc(78px + var(--safe-bottom));
     }
@@ -6211,31 +6240,11 @@ img {
     }
 }
 
-/* Netlify Injected Badge & Collaboration Drawer Failsafe */
+/* Netlify HUD badge + promo card failsafe — see the inline block in the page <head>. */
+body > iframe,
+iframe[srcdoc],
 #nl-badge-frame,
-.nl-badge-frame,
-iframe.nl-badge-frame,
-iframe#nl-badge-frame,
-iframe[title*="Netlify"],
-iframe[src*="netlify"],
-iframe[id*="netlify"],
-iframe[id*="nl-badge"],
-#netlify-badge,
-.netlify-badge,
-#netlify-drawer,
-iframe#netlify-drawer,
-[data-netlify-drawer],
-[data-netlify-badge],
-.netlify-drawer-container,
-div[id*="netlify-badge"] {
+#nl-hud-frame,
+iframe[title*="Netlify" i] {
     display: none !important;
-    visibility: hidden !important;
-    pointer-events: none !important;
-    opacity: 0 !important;
-    width: 0 !important;
-    height: 0 !important;
-    position: absolute !important;
-    top: -9999px !important;
-    left: -9999px !important;
-    z-index: -9999 !important;
 }

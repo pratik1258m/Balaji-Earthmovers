@@ -3,22 +3,39 @@ User-agent: *
 Allow: /
 Disallow: /scratch/
 Disallow: /brain/
+Disallow: /server.js
+Disallow: /README.md
+Disallow: /vercel.json
+Disallow: /deploy/
 
 # Sitemaps
 Sitemap: https://balajiearthmoversmumbai.com/sitemap.xml
 Host: https://balajiearthmoversmumbai.com
 
-# AI & Search Engine Crawlers
+# Search Engine Crawlers
 User-agent: Googlebot
 Allow: /
 
 User-agent: Googlebot-Image
 Allow: /images/
 
+User-agent: Googlebot-Video
+Allow: /video/
+
 User-agent: Bingbot
 Allow: /
 
+User-agent: Bingbot
+Allow: /images/
+
+# AI & Answer Engines
 User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: OAI-SearchBot
 Allow: /
 
 User-agent: PerplexityBot
@@ -27,6 +44,8 @@ Allow: /
 User-agent: ClaudeBot
 Allow: /
 
-User-agent: Applebot
+User-agent: Claude-SearchBot
 Allow: /
 
+User-agent: Applebot
+Allow: /

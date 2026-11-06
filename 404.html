@@ -24,110 +24,38 @@
         rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 
-    <!-- Netlify Badge & Drawer Permanent Hide -->
+    <!--
+        Netlify's HUD script (injected after </html> on free accounts) creates exactly one
+        iframe appended directly to document.body; the badge and the "Build your own site"
+        card are both inside it. This page ships no iframes of its own, so any body-level
+        iframe is Netlify's. If you ever add an embed as a direct child of <body>, exclude it.
+    -->
     <style>
+        body > iframe,
+        iframe[srcdoc],
         #nl-badge-frame,
-        .nl-badge-frame,
-        iframe.nl-badge-frame,
-        iframe#nl-badge-frame,
-        iframe[title*="Netlify"],
-        iframe[src*="netlify"],
-        iframe[id*="netlify"],
-        iframe[id*="nl-badge"],
-        #netlify-badge,
-        .netlify-badge,
-        #netlify-drawer,
-        iframe#netlify-drawer,
-        [data-netlify-drawer],
-        [data-netlify-badge],
-        .netlify-drawer-container,
-        div[id*="netlify"],
-        div[class*="netlify"],
-        a[href*="netlify.com"][class*="badge"],
-        a[href*="netlify.com"][id*="badge"],
-        #netlify-collaborative-tools,
-        netlify-drawer {
+        #nl-hud-frame,
+        iframe[title*="Netlify" i] {
             display: none !important;
-            visibility: hidden !important;
-            opacity: 0 !important;
-            pointer-events: none !important;
-            position: absolute !important;
-            width: 0 !important;
-            height: 0 !important;
-            top: -9999px !important;
-            left: -9999px !important;
-            z-index: -9999 !important;
         }
     </style>
     <script>
-        (function() {
-            function purgeNetlifyBadges() {
-                var targets = document.querySelectorAll('#nl-badge-frame, .nl-badge-frame, iframe.nl-badge-frame, iframe[title*="Netlify"], iframe[src*="netlify"], #netlify-badge, .netlify-badge, netlify-drawer, iframe#netlify-drawer, [data-netlify-drawer], [data-netlify-badge], .netlify-drawer-container, #netlify-collaborative-tools, a[href*="netlify.com"]');
-                for (var i = 0; i < targets.length; i++) {
-                    var el = targets[i];
-                    if (el) {
-                        el.remove();
-                    }
-                }
-            }
-            if (document.readyState === 'loading') {
-                document.addEventListener('DOMContentLoaded', purgeNetlifyBadges);
-            } else {
-                purgeNetlifyBadges();
-            }
-            try {
-                var obs = new MutationObserver(purgeNetlifyBadges);
-                obs.observe(document.documentElement, { childList: true, subtree: true });
-            } catch(e) {}
-        })();
-    </script>
+        (function () {
+            var HUD_SELECTOR = 'body > iframe, iframe[srcdoc], #nl-badge-frame, #nl-hud-frame, iframe[title*="Netlify" i]';
 
-    <!-- Netlify Badge & Drawer Permanent Hide -->
-    <style>
-        #netlify-badge,
-        .netlify-badge,
-        #netlify-drawer,
-        iframe#netlify-drawer,
-        [data-netlify-drawer],
-        .netlify-drawer-container,
-        div[id*="netlify"],
-        div[class*="netlify"],
-        a[href*="netlify.com"][class*="badge"],
-        a[href*="netlify.com"][id*="badge"],
-        #netlify-collaborative-tools,
-        netlify-drawer {
-            display: none !important;
-            visibility: hidden !important;
-            opacity: 0 !important;
-            pointer-events: none !important;
-            position: absolute !important;
-            width: 0 !important;
-            height: 0 !important;
-            top: -9999px !important;
-            left: -9999px !important;
-            z-index: -9999 !important;
-        }
-    </style>
-    <script>
-        (function() {
-            function purgeNetlifyBadges() {
-                var targets = document.querySelectorAll('#nl-badge-frame, iframe[title="Powered by Netlify"], iframe[src*="netlify"], #netlify-badge, .netlify-badge, netlify-drawer, iframe#netlify-drawer, [data-netlify-drawer], .netlify-drawer-container, #netlify-collaborative-tools, a[href*="netlify.com"]');
-                for (var i = 0; i < targets.length; i++) {
-                    var el = targets[i];
-                    if (el) {
-                        el.remove();
-                    }
+            function purgeHud() {
+                var nodes = document.querySelectorAll(HUD_SELECTOR);
+                for (var i = 0; i < nodes.length; i++) {
+                    nodes[i].remove();
                 }
             }
+
             if (document.readyState === 'loading') {
-                document.addEventListener('DOMContentLoaded', purgeNetlifyBadges);
+                document.addEventListener('DOMContentLoaded', purgeHud);
             } else {
-                purgeNetlifyBadges();
+                purgeHud();
             }
-            try {
-                var obs = new MutationObserver(purgeNetlifyBadges);
-                obs.observe(document.documentElement, { childList: true, subtree: true });
-            } catch(e) {}
+            new MutationObserver(purgeHud).observe(document.documentElement, { childList: true, subtree: true });
         })();
     </script>
 </head>

@@ -543,23 +543,49 @@ function initCraftSlider() {
         });
     }
 
-    // Touch swipe gesture support for mobile/tablets
-    let touchStartX = 0;
-    let touchEndX = 0;
+    /* Touch swipe: a deliberate horizontal drag steps the band. Vertical travel
+       belongs to the page's own scroll, and a thumb never travels in a
+       straight line, so the sideways drift on the way down must not read as a
+       swipe. */
+    const SWIPE_MIN_X = 70;
+    const SWIPE_DOMINANCE = 2.5;
+    const SWIPE_SCROLL_TOLERANCE = 40;
+
+    let touchStartX = NaN;
+    let touchStartY = 0;
+    let touchStartScrollY = 0;
 
     craftSec.addEventListener('touchstart', (e) => {
+        if (e.touches.length !== 1) {
+            touchStartX = NaN;
+            return;
+        }
         touchStartX = e.changedTouches[0].screenX;
+        touchStartY = e.changedTouches[0].screenY;
+        touchStartScrollY = window.pageYOffset;
     }, { passive: true });
 
     craftSec.addEventListener('touchend', (e) => {
-        touchEndX = e.changedTouches[0].screenX;
-        const diffX = touchEndX - touchStartX;
-        if (Math.abs(diffX) > 40) {
-            if (diffX < 0) {
-                goToPhase((currentPhase + 1) % totalPhases);
-            } else {
-                goToPhase(currentPhase > 0 ? currentPhase - 1 : totalPhases - 1);
-            }
+        if (!Number.isFinite(touchStartX)) return;
+        const startX = touchStartX;
+        const startY = touchStartY;
+        const startScrollY = touchStartScrollY;
+        touchStartX = NaN;
+
+        if (bandProgress() === null || Date.now() < animatingUntil) return;
+
+        const diffX = e.changedTouches[0].screenX - startX;
+        const diffY = e.changedTouches[0].screenY - startY;
+
+        const isSwipe = Math.abs(diffX) >= SWIPE_MIN_X
+            && Math.abs(diffX) >= Math.abs(diffY) * SWIPE_DOMINANCE
+            && Math.abs(window.pageYOffset - startScrollY) < SWIPE_SCROLL_TOLERANCE;
+        if (!isSwipe) return;
+
+        if (diffX < 0) {
+            goToPhase((currentPhase + 1) % totalPhases);
+        } else {
+            goToPhase(currentPhase > 0 ? currentPhase - 1 : totalPhases - 1);
         }
     }, { passive: true });
 
@@ -913,6 +939,12 @@ function initFaq() {
 const EMAIL_PATTERN = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 const NAME_PATTERN = /^[A-Za-z\s.'-]{2,60}$/;
 
+// The Web3Forms access key lives in the form markup, not here, so the no-JS
+// fallback POST reaches the same inbox. Enquiries go wherever that key is set
+// to deliver — attach the client's address as a linked email on the key.
+const WEB3FORMS_ENDPOINT = 'https://api.web3forms.com/submit';
+const LEAD_DESK_WHATSAPP = '919320320445';
+
 function initEstimateForm() {
     const form = document.getElementById('estimateForm');
     const toast = document.getElementById('toastNotification');
@@ -1019,6 +1051,9 @@ function initEstimateForm() {
     const successLocation = document.getElementById('successLocation');
     const successWhatsAppBtn = document.getElementById('successWhatsAppBtn');
     const btnNewEnquiry = document.getElementById('btnNewEnquiry');
+    const failCard = document.getElementById('formFailState');
+    const failWhatsAppBtn = document.getElementById('failWhatsAppBtn');
+    const btnRetryEnquiry = document.getElementById('btnRetryEnquiry');
 
     function showToast(message) {
         if (!toast || !toastMsg) return;
@@ -1070,12 +1105,7 @@ function initEstimateForm() {
         });
     });
 
-    function renderSuccessState(data) {
-        if (successName) successName.textContent = data.name;
-        if (successWork) successWork.textContent = data.work || 'earthmoving works';
-        if (successLocation) successLocation.textContent = data.loc || 'Mumbai / MMR';
-
-        // Prepare structured executive WhatsApp message for 1-click dispatch
+    function buildDeskWhatsAppHref(data) {
         const waMsgLines = [
             `*PROJECT ENQUIRY — BALAJI EARTHMOVERS*`,
             ``,
@@ -1093,17 +1123,42 @@ function initEstimateForm() {
             `_Enquiry submitted via balajiearthmoversmumbai.com — please share estimate & schedule site feasibility._`
         ].filter(Boolean).join('\n');
 
-        if (successWhatsAppBtn) {
-            successWhatsAppBtn.href = `https://wa.me/919320320445?text=${encodeURIComponent(waMsgLines)}`;
-        }
+        return `https://wa.me/${LEAD_DESK_WHATSAPP}?text=${encodeURIComponent(waMsgLines)}`;
+    }
 
+    function showResultCard(card) {
         form.style.display = 'none';
-        if (successCard) {
-            successCard.style.display = 'block';
-            successCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }
+        [successCard, failCard].forEach((el) => {
+            if (el) el.style.display = el === card ? 'block' : 'none';
+        });
+        if (card) card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    function showForm() {
+        [successCard, failCard].forEach((el) => {
+            if (el) el.style.display = 'none';
+        });
+        form.style.display = 'flex';
+    }
+
+    function renderSuccessState(data) {
+        if (successName) successName.textContent = data.name;
+        if (successWork) successWork.textContent = data.work || 'earthmoving works';
+        if (successLocation) successLocation.textContent = data.loc || 'Mumbai / MMR';
+        if (successWhatsAppBtn) successWhatsAppBtn.href = buildDeskWhatsAppHref(data);
+
+        showResultCard(successCard);
 
         showToast(`Thank you ${data.name} — your enquiry has been submitted. Our engineering desk will review and contact you.`);
+    }
+
+    function renderFailState(data, reason) {
+        if (failWhatsAppBtn) failWhatsAppBtn.href = buildDeskWhatsAppHref(data);
+
+        showResultCard(failCard);
+
+        showToast('Your enquiry was not delivered. Send it on WhatsApp or call the desk instead.');
+        console.warn(`Enquiry dispatch failed: ${reason}`);
     }
 
     if (btnNewEnquiry) {
@@ -1117,8 +1172,14 @@ function initEstimateForm() {
                 }
                 if (fields[key].err) fields[key].err.textContent = '';
             });
-            form.style.display = 'flex';
-            if (successCard) successCard.style.display = 'none';
+            showForm();
+        });
+    }
+
+    if (btnRetryEnquiry) {
+        btnRetryEnquiry.addEventListener('click', () => {
+            showForm();
+            form.requestSubmit();
         });
     }
 
@@ -1166,30 +1227,45 @@ function initEstimateForm() {
         if (submitBtn) submitBtn.disabled = true;
         if (submitText) submitText.textContent = 'SENDING ENQUIRY...';
 
-        const formData = new FormData(form);
-        if (mail) {
-            formData.set('_replyto', mail);
-        }
+        const body = {};
+        new FormData(form).forEach((value, key) => { body[key] = value; });
+        if (mail) body.replyto = mail;
 
-        // Submit via AJAX to FormSubmit endpoint forwarding directly to pratikmishra206@gmail.com (Testing)
-        fetch('https://formsubmit.co/ajax/pratikmishra206@gmail.com', {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json'
-            },
-            body: formData
-        })
-        .then((response) => {
-            renderSuccessState(payload);
-        })
-        .catch((error) => {
-            console.info('Form submission fallback:', error);
-            renderSuccessState(payload);
-        })
-        .finally(() => {
+        const honeypotFilled = Boolean(body._honey);
+        delete body._honey;
+
+        const resetButton = () => {
             if (submitBtn) submitBtn.disabled = false;
             if (submitText) submitText.textContent = 'SUBMIT ENQUIRY';
-        });
+        };
+
+        // Honeypot filled: bot. Swallow the submit without dispatching or signalling why.
+        if (honeypotFilled) {
+            resetButton();
+            return;
+        }
+
+        fetch(WEB3FORMS_ENDPOINT, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify(body)
+        })
+            .then((response) => response.json().catch(() => ({})).then((data) => ({ response, data })))
+            .then(({ response, data }) => {
+                const accepted = response.ok && String(data.success) !== 'false';
+                if (!accepted) {
+                    throw new Error(data.message || data.error || `Web3Forms responded with HTTP ${response.status}`);
+                }
+                resetButton();
+                renderSuccessState(payload);
+            })
+            .catch((error) => {
+                resetButton();
+                renderFailState(payload, error.message || error);
+            });
     });
 }
 
